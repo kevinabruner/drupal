@@ -1,4 +1,4 @@
-- name: Wait for Cloud-Init to finish (and survive reboots)
+- name: Wait for Cloud-Init to finish
   block:
     - name: Wait for port 22 to become available
       ansible.builtin.wait_for:
