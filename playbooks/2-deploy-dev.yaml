@@ -2,8 +2,6 @@
   hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev"
   vars_files:
     - /home/kevin/db-server/playbook/vault.yaml
-  vars:
-    - ceph_target_dir: /var/www/html/sites/default/files
 
   roles:
     - role: common_web      # Installs Apache, PHP, system tools
