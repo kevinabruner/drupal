@@ -2,5 +2,5 @@
   hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev"
   gather_facts: false
   roles:
-    - role: drupal_build
+    - drupal_build
       
