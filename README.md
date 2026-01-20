@@ -21,7 +21,7 @@ These roles and playbooks are designed to manage a number of websites, but are n
 
 ## Playbook steps
 1. Create your dev machines by using [netbox](https://netbox.thejfk.ca) (internal link only!) and then deploy them using the [Terraform server](https://github.com/kevinabruner/terraform).
-  - Optionally destroy and recreate blank dev machines by running `ansible-playbook 0-wipe-dev.yaml`
+    - Optionally destroy and recreate blank dev machines by running `ansible-playbook 0-wipe-dev.yaml`
 2. On the Ansible controller, first run the build.yaml playbook to build the composer files into a Drupal application. This will run locally on your Ansible controller.
     - `ansible-playbook playbooks/1-build-composer.yaml`
 3. Once Drupal is built, you can deploy all of its files to your dev servers.
