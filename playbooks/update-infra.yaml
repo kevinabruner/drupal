@@ -1,0 +1,10 @@
+- name: Update DNS, NFS and proxy configuration after netbox update
+  hosts: localhost
+- name: Import DNS update playbook
+  import_playbook: ../pi/update-dns.yaml 
+- name: Import internal reverse proxy config playbook
+  import_playbook: ../reverse-proxy/update-internal-config.yaml
+- name: Import external reverse proxy config playbook
+  import_playbook: ../reverse-proxy/update-external-config.yaml
+- name: Import NAS nfs permissions playbook
+  import_playbook: ../truenas/playbook/set-nfs-perms.yaml

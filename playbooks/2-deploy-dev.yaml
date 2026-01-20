@@ -1,0 +1,10 @@
+- name: Parallel Deploy for Dev
+  hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev"
+  vars_files:
+    - /home/kevin/db-server/playbook/vault.yaml
+
+  roles:
+    - role: common_web      # Installs Apache, PHP, system tools
+    - role: drupal_app      # Syncs files, settings.php, themes
+    - role: drupal_storage  # Handles NFS/Ceph mounts
+    - role: drupal_ops      # Runs Drush, restarts services

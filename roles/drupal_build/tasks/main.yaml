@@ -1,0 +1,29 @@
+- name: Detect repo name
+  ansible.builtin.set_fact:
+    detected_repo: "{{ group_names | select('match', '^repo_') | first | replace('repo_', '') }}"
+
+- name: Build block on controller
+  delegate_to: localhost
+  block:
+    - name: Prepare build directory
+      ansible.builtin.file:
+        path: "{{ build_base_path }}/{{ detected_repo }}/.build"
+        state: "{{ item }}"
+      loop: [absent, directory]
+
+    - name: Copy composer file
+      ansible.builtin.copy:
+        src: "{{ build_base_path }}/{{ detected_repo }}/drupal/composer.json"
+        dest: "{{ build_base_path }}/{{ detected_repo }}/.build/composer.json"
+
+    - name: Build composer project
+      community.general.composer:
+        command: install
+        working_dir: "{{ build_base_path }}/{{ detected_repo }}/.build"
+        optimize_autoloader: yes
+      register: composer_output
+
+    - name: Show Composer Output
+      ansible.builtin.debug:
+        var: composer_output.stdout_lines
+      when: composer_output.stdout is defined

@@ -1,0 +1,73 @@
+- name: Verify build artifact exists before proceeding
+  include_tasks: check-build-dir.yaml
+
+- name: Unmount storage before cleanup
+  ansible.posix.mount:
+    path: "{{ item }}"
+    state: unmounted
+  loop:
+    - "{{ ceph_target_dir }}"
+    - "{{ nfs_target_dir }}"
+  become: true
+
+- name: Clean web root
+  ansible.builtin.file:
+    path: /var/www/html
+    state: absent
+  become: true
+
+- name: Re-create web root directory
+  ansible.builtin.file:
+    path: /var/www/html
+    state: directory
+    owner: www-data
+    group: www-data
+    mode: '0755'
+  become: true
+
+- name: Sync Drupal Core and Vendor
+  ansible.posix.synchronize:
+    src: "{{ build_base_path }}/{{ target_app }}/.build/{{ item.src }}/"
+    dest: "/var/www/{{ item.dest }}/"
+    delete: yes
+  loop:
+    - { src: "html", dest: "html", opts: ["--exclude=sites/default/files", "--exclude=sites/default/settings.php"] }
+    - { src: "vendor", dest: "vendor" }
+  become: true
+
+- name: Copy theme(s)
+  ansible.builtin.copy:
+    src: "{{ build_base_path }}/{{ target_app }}/drupal/themes/"
+    dest: "/var/www/html/themes/contrib/"
+
+- name: Deploy settings.php and Apache Vhost
+  ansible.builtin.template:
+    src: "{{ item.src }}"
+    dest: "{{ item.dest }}"
+    owner: www-data
+    group: www-data
+  loop:
+    - { src: "{{ drupal_template_dir }}/settings.php.j2", dest: "/var/www/html/sites/default/settings.php" }
+    - { src: "{{ drupal_template_dir }}/haproxy-target.conf.j2", dest: "/etc/apache2/sites-available/haproxy-target.conf" }
+  notify: Restart Apache
+  become: true
+
+- name: Enable Site in Apache
+  ansible.builtin.command: a2ensite haproxy-target
+  register: ensite_result
+  changed_when: "'Enabling site' in ensite_result.stdout"
+  become: true
+
+- name: Ensure default Apache site is disabled
+  ansible.builtin.command: a2dissite 000-default.conf
+  notify: Restart Apache
+  become: true
+
+- name: "Cron: Create staggered rsync backup (only runs on prod by checking db host variable)"
+  become: true
+  ansible.builtin.cron:
+    name: "Backup CephFS to NFS"        
+    hour: "{{ (3 + groups['repo_' + target_app].index(inventory_hostname)) % 24 }}"
+    minute: "0"
+    job: "grep -q 'environment=prod' /etc/environment && rsync -az --delete {{ ceph_target_dir }}/ {{ nfs_target_dir }}/"
+    user: root

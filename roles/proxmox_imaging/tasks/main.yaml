@@ -1,0 +1,78 @@
+- name: "Force Disk Sync on Dev VM (prevents newly created files from dissappearing at shutdown)"
+  shell: "/usr/sbin/qm guest exec {{ vmid_to_clone }} -- sync"
+  delegate_to: "{{ pve_source_node }}"
+  failed_when: false
+
+- name: "Ensure Source VM {{ vmid_to_clone }} is stopped"
+  delegate_to: "{{ pve_source_node }}"
+  remote_user: root
+  shell: "/usr/sbin/qm stop {{ vmid_to_clone }} && /usr/sbin/qm wait {{ vmid_to_clone }}"
+  failed_when: false
+
+- name: "Remove existing golden image {{ new_template_id }} on {{ pve_target_node }}"
+  delegate_to: "{{ pve_target_node }}"
+  remote_user: root
+  shell: |
+    rm -f /etc/pve/qemu-server/{{ new_template_id }}.conf
+    rm -rf /mnt/pve/{{ golden_storage }}/images/{{ new_template_id }}
+    qm destroy {{ new_template_id }} --purge || true
+  failed_when: false
+  register: cleanup_result
+
+- name: "Clone {{ vmid_to_clone }} to {{ new_template_id }}"
+  delegate_to: "{{ pve_source_node }}"
+  remote_user: root
+  shell: >
+    /usr/sbin/qm clone {{ vmid_to_clone }} {{ new_template_id }} 
+    --full --name {{ target_app }}-golden 
+    --storage {{ golden_storage }}
+
+- name: "Migrate {{ target_app }} template to {{ pve_target_node }}"
+  delegate_to: "{{ pve_source_node }}"
+  remote_user: root
+  shell: "/usr/sbin/qm migrate {{ new_template_id }} {{ pve_target_node }}"
+  when: pve_source_node != pve_target_node
+
+- name: "Sanitization for {{ target_app }}"
+  delegate_to: "{{ pve_target_node }}"
+  remote_user: root
+  block:
+    - name: "Enable Agent and Start VM {{ new_template_id }}"
+      shell: |
+        /usr/sbin/qm set {{ new_template_id }} --agent 1
+        /usr/sbin/qm start {{ new_template_id }}
+
+    - name: "Wait for QEMU Guest Agent"
+      shell: "/usr/sbin/qm guest exec {{ new_template_id }} -- uptime"
+      register: agent_check
+      until: agent_check.rc == 0
+      retries: 30
+      delay: 5
+
+    - name: "Execute Sanitization via Guest Agent"
+      shell: "/usr/sbin/qm guest exec {{ new_template_id }} -- /bin/sh -c '{{ item }}'"
+      loop:
+        - "cloud-init clean --logs"
+        - "truncate -s 0 /etc/machine-id"
+        - "rm -f /etc/ssh/ssh_host_*"        
+        - "truncate -s 0 /etc/environment"
+
+    - name: "Graceful Shutdown"
+      shell: "/usr/sbin/qm shutdown {{ new_template_id }}"
+
+    - name: "Wait for VM to stop"
+      shell: "/usr/sbin/qm status {{ new_template_id }}"
+      register: vm_status
+      until: "'status: stopped' in vm_status.stdout"
+      retries: 20
+      delay: 5
+
+- name: "Convert {{ new_template_id }} to \"golden image\" template"
+  delegate_to: "{{ pve_target_node }}"
+  remote_user: root
+  shell: "/usr/sbin/qm template {{ new_template_id }}"
+
+- name: "Restart Source Dev VM {{ vmid_to_clone }}"
+  delegate_to: "{{ pve_source_node }}"
+  remote_user: root
+  shell: "/usr/sbin/qm start {{ vmid_to_clone }}"

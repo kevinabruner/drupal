@@ -1,0 +1,6 @@
+- name: Promote dev image and deploy to all prod servers
+  hosts: localhost
+- name: Import "Bake image" playbook
+  import_playbook: 3-bake-image.yaml
+- name: Import "Deploy prod" playbook
+  import_playbook: 4-deploy-prod.yaml

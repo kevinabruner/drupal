@@ -1,0 +1,21 @@
+- name: Identify Repository for verification
+  ansible.builtin.set_fact:    
+    target_repo_name: "{{ group_names | select('match', '^repo_') | first | replace('repo_', '') }}"
+
+- name: Ensure local build directory exists
+  delegate_to: localhost 
+  # only run on first host
+  when: inventory_hostname == groups['repo_' + target_repo_name][0]
+  ansible.builtin.stat:
+    path: "/home/kevin/{{ target_repo_name }}/.build"
+  register: build_dir_stat
+
+- name: Halt play if .build is missing
+  # only run on first host
+  when: inventory_hostname == groups['repo_' + target_repo_name][0]
+  ansible.builtin.assert:
+    that:
+      - build_dir_stat.stat.exists
+      - build_dir_stat.stat.isdir
+    fail_msg: "ERROR: The directory '/home/kevin/{{ target_repo_name }}/.build' was not found. Ya gotta build it first, dumb-dumb"
+    success_msg: "Build directory for {{ target_repo_name }} verified. Proceeding with deployment."

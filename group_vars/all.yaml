@@ -1,0 +1,8 @@
+ansible_user: kevin
+build_base_path: "/home/{{ ansible_user }}"
+git_dir: "{{ build_base_path }}/{{ application }}"
+drupal_template_dir: "{{ build_base_path }}/{{ target_app }}/templates/"
+application: ansible
+env: "{{ custom_fields.dev_or_prod }}"
+ceph_target_dir: /var/www/html/sites/default/files
+nfs_target_dir: /home/{{ ansible_user }}/nfs-files

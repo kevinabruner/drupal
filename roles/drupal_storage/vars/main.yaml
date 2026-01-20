@@ -1,0 +1,12 @@
+nfs_server: 192.168.11.20
+nfs_share: /mnt/yes/gitbuilds/{{ target_app }}/files
+nfs_options:
+  - defaults
+  - x-systemd.automount
+  - x-systemd.idle-timeout=60s
+  - soft
+  - timeo=14
+  - retrans=2
+  - _netdev
+ceph_monitors: "192.168.11.11:6789,192.168.11.12:6789,192.168.11.13:6789"
+ceph_user: "admin"

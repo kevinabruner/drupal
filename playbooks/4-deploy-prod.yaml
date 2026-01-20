@@ -1,0 +1,5 @@
+- name: Serial Rolling Deploy for Prod
+  hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_prod"
+  serial: 1  
+  roles:
+    - role: terraform_refresh

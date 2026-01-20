@@ -1,0 +1,19 @@
+php_packages:
+  - php
+  - php-gd
+  - php-pdo
+  - php-mysql
+  - php-dom
+  - php-mbstring
+  - php-curl
+
+system_packages:
+  - apache2
+  - mysql-client
+  - ncdu
+  - gh
+  - vim
+  - nfs-common
+  - htop
+  - qemu-guest-agent
+  - ceph-common

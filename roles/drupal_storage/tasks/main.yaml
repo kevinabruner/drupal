@@ -1,0 +1,35 @@
+- name: Create Ceph secret file
+  ansible.builtin.copy:
+    content: "{{ ceph_secret }}"
+    dest: "/etc/ceph/{{ ceph_user }}.secret"
+    mode: '0600'
+  become: true
+
+- name: Ensure mount points exist
+  ansible.builtin.file:
+    path: "{{ item }}"
+    state: directory
+    owner: www-data
+    group: www-data
+  loop:
+    - "{{ nfs_target_dir }}"
+    - "{{ ceph_target_dir }}"
+  become: true
+
+- name: Mount NFS Share
+  ansible.posix.mount:
+    path: "{{ nfs_target_dir }}"
+    src: "{{ nfs_server }}:{{ nfs_share }}"
+    fstype: nfs
+    opts: "{{ nfs_options | join(',') }}"
+    state: mounted
+  become: true
+
+- name: Mount CephFS
+  ansible.posix.mount:
+    path: "{{ ceph_target_dir }}"
+    src: "{{ ceph_monitors }}:/{{ target_app }}"
+    fstype: ceph
+    opts: "name={{ ceph_user }},secretfile=/etc/ceph/{{ ceph_user }}.secret,_netdev"
+    state: mounted
+  become: true

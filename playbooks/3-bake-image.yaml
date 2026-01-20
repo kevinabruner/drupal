@@ -1,0 +1,32 @@
+- name: Bake Application Image
+  hosts: localhost
+  gather_facts: false
+  
+  pre_tasks:
+    - name: Safety check - Ensure target_app is specified
+      ansible.builtin.assert:
+        that:
+          - target_app is defined
+          - target_app | length > 0
+        fail_msg: "You must specify a site to bake. Example: -e 'target_app=nerdperk'"
+
+  tasks:
+    - name: Identify Source VM and Template ID
+      set_fact:
+        source_host: "{{ (groups['repo_' + target_app] | intersect(groups['env_dev']) | sort) | first }}"
+      
+    - name: Set VMID Facts
+      set_fact:
+        source_vmid: "{{ hostvars[source_host]['custom_fields']['vmid'] }}"
+        template_vmid: "{{ hostvars[source_host]['custom_fields']['vmid'] ~ '0' }}"
+        bake_source_node: "nuc1"
+
+    - name: Run Proxmox Imaging Role
+      include_role:
+        name: proxmox_imaging
+      vars:
+        ansible_user: root
+        pve_source_node: "{{ bake_source_node }}"
+        pve_target_node: "pve"
+        vmid_to_clone: "{{ source_vmid }}"
+        new_template_id: "{{ template_vmid }}"

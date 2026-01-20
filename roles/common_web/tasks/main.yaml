@@ -1,0 +1,48 @@
+- name: Wait for Cloud-Init to finish (and survive reboots)
+  block:
+    - name: Wait for port 22 to become available
+      ansible.builtin.wait_for:
+        host: "{{ inventory_hostname }}"
+        port: 22
+        delay: 10
+        timeout: 300
+      delegate_to: localhost
+
+    - name: Wait for Cloud-Init to finish
+      ansible.builtin.shell: cloud-init status --wait
+      become: true
+      changed_when: false
+      register: cloud_init_result
+      until: cloud_init_result is success
+      retries: 10
+      delay: 15
+
+- name: Install PHP and Web stack
+  ansible.builtin.apt:
+    name: "{{ php_packages + system_packages }}"
+    state: present
+    update_cache: yes
+  become: true
+
+- name: Ensure kevin is in www-data group
+  ansible.builtin.user:
+    name: "{{ ansible_user }}"
+    groups: www-data
+    append: yes
+  become: true
+
+- name: Enable Apache modules
+  community.general.apache2_module:
+    name: "{{ item }}"
+    state: present
+  loop: [rewrite, status]
+  notify: Restart Apache
+  become: true
+
+- name: Configure Apache global options
+  ansible.builtin.replace:
+    path: /etc/apache2/apache2.conf
+    regexp: "(<Directory /var/www/>)\\n(\\s+Options Indexes FollowSymLinks\\n\\s+AllowOverride) None"
+    replace: "\\1\\n\\2 All"
+  notify: Restart Apache
+  become: true

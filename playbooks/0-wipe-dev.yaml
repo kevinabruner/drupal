@@ -1,0 +1,5 @@
+- name: Re-deploy dev servers for fresh installation
+  hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev"
+  roles:
+    - terraform_refresh
+                                   
