@@ -2,7 +2,8 @@
   hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev"
   vars_files:
     - /home/kevin/db-server/playbook/vault.yaml
-
+    - /home/kevin/drupal/group_vars/vault.yaml
+    - /home/kevin/drupal/group_vars/vars.yaml
   roles:
     - role: common_web      # Installs Apache, PHP, system tools
     - role: drupal_app      # Syncs files, settings.php, themes
