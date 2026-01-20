@@ -4,6 +4,7 @@
 
 - name: Build block on controller
   delegate_to: localhost
+  run_once: true
   block:
     - name: Prepare build directory
       ansible.builtin.file:
