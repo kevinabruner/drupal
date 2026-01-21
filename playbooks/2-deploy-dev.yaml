@@ -3,6 +3,7 @@
   vars_files:
     - /home/kevin/db-server/playbook/vault.yaml
     - /home/kevin/drupal/group_vars/vault.yaml
+    - /home/kevin/drupal/group_vars/all.yaml
   roles:
     - role: drupal_dependencies   # Installs Apache, PHP, system tools
     - role: drupal_deploy         # Syncs files, settings.php, themes
