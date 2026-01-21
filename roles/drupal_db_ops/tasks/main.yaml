@@ -8,6 +8,5 @@
   loop:
     - "state:set system.maintenance_mode 1"
     - "updatedb -y"
-    #- "config:import -y"
     - "cache:rebuild"
     - "state:set system.maintenance_mode 0"
