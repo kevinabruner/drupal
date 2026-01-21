@@ -1,3 +1,0 @@
-ceph_target_dir: "/var/www/html/sites/default/files"
-nfs_target_dir: /home/{{ ansible_user }}/nfs-files
-drupal_template_dir: "{{ build_base_path }}/{{ target_app }}/templates/"
