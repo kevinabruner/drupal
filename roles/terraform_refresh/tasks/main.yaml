@@ -4,6 +4,5 @@
     terraform apply -replace='proxmox_vm_qemu.proxmox_vms["{{ inventory_hostname }}"]' -auto-approve
   args:
     chdir: "/home/kevin/terraform"
-  async: 300 
   poll: 10
   throttle: 1
