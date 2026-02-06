@@ -1,4 +1,4 @@
-## 1. Refresh the state once for the entire batch
+## 1. Refresh once (Parallel/Fast)
 - name: Pre-refresh Terraform state
   delegate_to: terraform
   run_once: true
@@ -6,7 +6,7 @@
   args:
     chdir: "/home/kevin/terraform"
 
-## 2. Recreate the node (Fast path)
+## 2. Recreate (Sequential/Fast)
 - name: Force Terraform to recreate node
   delegate_to: terraform
   shell: |
@@ -16,3 +16,4 @@
       -auto-approve
   args:
     chdir: "/home/kevin/terraform"
+  throttle: 1  
