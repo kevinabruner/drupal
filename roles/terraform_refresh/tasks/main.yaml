@@ -1,8 +1,18 @@
-- name: Force Terraform to recreate this specific node
+## 1. Refresh the state once for the entire batch
+- name: Pre-refresh Terraform state
   delegate_to: terraform
-  shell: |
-    terraform apply -replace='proxmox_vm_qemu.proxmox_vms["{{ inventory_hostname }}"]' -auto-approve
+  run_once: true
+  command: terraform apply -refresh-only -auto-approve
   args:
     chdir: "/home/kevin/terraform"
-  poll: 10
-  throttle: 1
+
+## 2. Recreate the node (Fast path)
+- name: Force Terraform to recreate node
+  delegate_to: terraform
+  shell: |
+    terraform apply \
+      -replace='proxmox_vm_qemu.proxmox_vms["{{ inventory_hostname }}"]' \
+      -refresh=false \
+      -auto-approve
+  args:
+    chdir: "/home/kevin/terraform"
