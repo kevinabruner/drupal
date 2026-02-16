@@ -27,6 +27,11 @@
     --full --name {{ target_app }}-golden 
     --storage {{ golden_storage }}
 
+- name: "Remove local Cloud-Init ISO from clone"
+  delegate_to: "{{ pve_source_node }}"
+  remote_user: root
+  shell: "/usr/sbin/qm set {{ new_template_id }} --delete ide3"
+
 - name: "Migrate {{ target_app }} template to {{ pve_target_node }}"
   delegate_to: "{{ pve_source_node }}"
   remote_user: root
