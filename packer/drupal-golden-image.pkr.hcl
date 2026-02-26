@@ -71,7 +71,7 @@ source "proxmox-iso" "drupal-base" {
 }
 
 build {
-  sources = ["source.proxmox-clone.drupal-base"]
+  sources = ["source.proxmox-iso.drupal-base"]
 
   # Step 1: Ensure qemu-guest-agent is alive so Packer can find the IP
   provisioner "shell" {
