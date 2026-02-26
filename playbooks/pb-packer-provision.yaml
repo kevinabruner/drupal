@@ -10,5 +10,4 @@
   roles:
     - drupal_dependencies
     - drupal_deploy
-    # Do NOT include drupal_db_ops here if it targets a specific DB server
-    # Do NOT include drupal_storage if it mounts environment-specific NFS
+    - drupal_storage
