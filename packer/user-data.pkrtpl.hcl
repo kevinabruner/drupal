@@ -17,18 +17,33 @@ autoinstall:
     - qemu-guest-agent
     - openssh-server
   storage:
-    grub:
-      device: /dev/sda
-    # Explicitly telling the installer to wipe the disk-id found in your logs
     config:
       - type: disk
         id: disk-sda
         path: /dev/sda
+        ptable: gpt
         wipe: superblock-recursive
         preserve: false
-    layout:
-      name: direct
-      confirm: true
+        grub_device: true
+      - type: partition
+        id: partition-0
+        device: disk-sda
+        size: 1M
+        flag: bios_grub
+      - type: partition
+        id: partition-1
+        device: disk-sda
+        size: -1
+        preserve: false
+      - type: format
+        id: format-0
+        fstype: ext4
+        volume: partition-1
+        preserve: false
+      - type: mount
+        id: mount-0
+        device: format-0
+        path: /
   late-commands:
     - curtin in-target -- systemctl enable qemu-guest-agent
     - ["curtin", "in-target", "--", "poweroff"]
