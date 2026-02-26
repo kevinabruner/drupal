@@ -76,7 +76,7 @@ source "proxmox-iso" "drupal-base" {
 boot_command = [
     "<esc><wait><esc><wait>", 
     "c<wait>", 
-    "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=dhcp net.ifnames=0 --- <enter><wait>",
+    "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=dhcp net.ifnames=0 biosdevname=0 --- <enter><wait>",
     "initrd /casper/initrd<enter><wait>",
     "boot<enter>"
   ]
