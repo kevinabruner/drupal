@@ -5,8 +5,8 @@ autoinstall:
     - none
   identity:
     hostname: packer-drupal
-    password: "$6$HFFPPnhKmtgvZKvJ$HPlCLq8z9Dswz8nEJxUvtMsG3z4ZhriLpZiYirybfzy0vTb6boR//sErEIhZ0mhnyqIUrUrr6HYZjWRykCLXu/"
     username: kevin
+    password: "$6$HFFPPnhKmtgvZKvJ$HPlCLq8z9Dswz8nEJxUvtMsG3z4ZhriLpZiYirybfzy0vTb6boR//sErEIhZ0mhnyqIUrUrr6HYZjWRykCLXu/"
   network:
     version: 2
     ethernets:
@@ -15,8 +15,9 @@ autoinstall:
   ssh:
     install-server: true
     authorized-keys:
-      - ${ssh_key}
-  # Packages and runcmd must be top-level under autoinstall
+      - |
+        ${ssh_key}
+  # These are top-level autoinstall keys, NOT inside a user-data block
   package_upgrade: true
   packages:
     - qemu-guest-agent
