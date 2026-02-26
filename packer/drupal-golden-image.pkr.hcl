@@ -33,8 +33,6 @@ source "proxmox-iso" "drupal-base" {
   proxmox_url = var.proxmox_api_url
   username    = "terraform@pam!main_terraform"
   token       = var.proxmox_api_token_secret
-  #insecure_skip_tls_verify = true
-  ssh_skip_host_key_check = true
 
   node    = "pve"
   vm_name = "packer-drupal-iso"
