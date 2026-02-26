@@ -18,35 +18,12 @@ autoinstall:
     - openssh-server
   storage:
     grub:
-      reinstall_grub: true
-    config:
-      - type: disk
-        id: disk-sda
-        path: /dev/sda
-        ptable: gpt
-        # Forces the installer to wipe everything without asking
-        preserve: false
-        wipe: superblock-recursive
-        grub_device: true
-      - type: partition
-        id: partition-0
-        device: disk-sda
-        size: 1M
-        flag: bios_grub
-      - type: partition
-        id: partition-1
-        device: disk-sda
-        size: -1
-        preserve: false
-      - type: format
-        id: format-0
-        fstype: ext4
-        volume: partition-1
-        preserve: false
-      - type: mount
-        id: mount-0
-        device: format-0
-        path: /
+      device: /dev/sda
+    layout:
+      name: direct
+      # This is the specific flag that tells 24.04 
+      # "I know what I'm doing, wipe the disk."
+      confirm: true
   late-commands:
     - curtin in-target -- systemctl enable qemu-guest-agent
   user-data:
