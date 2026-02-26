@@ -60,7 +60,7 @@ source "proxmox-iso" "drupal-base" {
   # --- Automation ---
   http_directory = "packer" 
 # Give the VM plenty of time to reach the GRUB menu
-  boot_wait = "10s" 
+  boot_wait = "30s" 
   
   boot_command = [
     # 1. Escape out of any initial splash menus
