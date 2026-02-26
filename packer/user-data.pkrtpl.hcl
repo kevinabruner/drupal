@@ -1,7 +1,6 @@
 #cloud-config
 autoinstall:
   version: 1
-  # ADD THIS: This tells the installer to never stop for user input
   interactive-sections:
     - none
   identity:
