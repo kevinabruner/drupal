@@ -84,7 +84,7 @@ boot_command = [
   ]
 
   ssh_username = "kevin"
-  ssh_skip_host_key_check = true
+  ssh_handshake_attempts = 100
   ssh_timeout  = "15m"
   ssh_private_key_file = "~/.ssh/id_rsa"
 }
