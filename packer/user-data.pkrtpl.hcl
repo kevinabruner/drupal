@@ -1,6 +1,7 @@
 #cloud-config
 autoinstall:
   version: 1
+  reboot: true
   interactive-sections:
     - none
   identity:
