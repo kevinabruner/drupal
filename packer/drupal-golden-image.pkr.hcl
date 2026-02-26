@@ -74,12 +74,12 @@ source "proxmox-iso" "drupal-base" {
     "/meta-data" = ""
   }
 # Give the VM plenty of time to reach the GRUB menu
-  boot_wait = "5s" 
+  boot_wait = "10s" 
   
   boot_command = [
     "<esc><wait><esc><wait>",
     "c<wait>",
-    "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=:::::ens18:dhcp cloud-init=enabled --- <enter><wait>",
+    "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=dhcp net.ifnames=0 biosdevname=0 ipv6.disable=1 --- <enter><wait>",
     "initrd /casper/initrd<enter><wait>",
     "boot<enter>"
   ]
