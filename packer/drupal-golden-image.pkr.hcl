@@ -10,6 +10,12 @@ packer {
     }
   }
 }
+
+locals {
+  # Read your actual public key from your home directory
+  my_public_key = file("~/.ssh/id_rsa.pub")
+}
+
 variable "ssh_password" {
   type      = string
   sensitive = true
@@ -58,7 +64,10 @@ source "proxmox-iso" "drupal-base" {
   }
 
   # --- Automation ---
-  http_directory = "packer" 
+  http_content = {
+    "/user-data" = templatefile("${path.root}/user-data.pkrtpl.hcl", { ssh_key = local.my_public_key })
+    "/meta-data" = ""
+  }
 # Give the VM plenty of time to reach the GRUB menu
   boot_wait = "15s" 
   
