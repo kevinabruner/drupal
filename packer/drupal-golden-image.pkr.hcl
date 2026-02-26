@@ -65,7 +65,7 @@ source "proxmox-clone" "drupal-base" {
   memory = 1024
 
   ssh_username = "kevin"
-  qemu_agent   = tru
+  qemu_agent   = true
   ssh_timeout  = "15m"
   
 
