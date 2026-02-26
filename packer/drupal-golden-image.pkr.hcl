@@ -37,7 +37,6 @@ source "proxmox-iso" "drupal-base" {
   
   cores                = 2
   memory               = 2048
-  scsi_controller      = "virtio-scsi-pci"
 
 # 2. Use a more robust Disk Block (Ensure Type and Storage match)
   disks {
