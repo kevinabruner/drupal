@@ -105,7 +105,7 @@ build {
     ]
     # Pass variables if your roles need them during baking
     extra_arguments = [
-      "--extra-vars", "is_packer_build=true"
+      "--extra-vars", "is_packer_build=true target_app=nerdperk"
     ]
   }
 
