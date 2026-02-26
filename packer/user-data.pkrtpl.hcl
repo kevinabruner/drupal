@@ -49,3 +49,5 @@ autoinstall:
         id: mount-0
         device: format-0
         path: /
+  late-commands:
+    - curtin in-target -- target systemctl enable qemu-guest-agent
