@@ -10,7 +10,7 @@ autoinstall:
     network:
       version: 2
       ethernets:
-        enp1s0: # Ubuntu 24.04 usually names the first VirtIO slot enp1s0
+        ens18:
           dhcp4: true
   ssh:
     install-server: true
