@@ -1,4 +1,4 @@
-- name: Bake Drupal Golden Image
+- name: Setup templated Drupal install for packer image
   hosts: all
   become: true
   roles:
