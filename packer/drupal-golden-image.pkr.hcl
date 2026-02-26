@@ -51,16 +51,8 @@ source "proxmox-clone" "drupal-base" {
         dhcp4: true
   EOF
 
-  # --- Clone Settings ---
-  node     = "pve"
-  clone_vm = "ubuntu-2404-cloud"
-  vm_name  = "packer-drupal-bake"
-  
-  # Make sure Packer uses your kevin user to connect
-  ssh_username = "kevin"
-  qemu_agent   = tru
-  ssh_timeout  = "15m"
-}
+
+
   
 # --- Clone Settings ---
   node                 = "pve" # The Proxmox node name
@@ -71,6 +63,10 @@ source "proxmox-clone" "drupal-base" {
   # --- VM Specs for the build process ---
   cores  = 2
   memory = 1024
+
+  ssh_username = "kevin"
+  qemu_agent   = tru
+  ssh_timeout  = "15m"
   
 
 }
