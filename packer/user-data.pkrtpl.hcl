@@ -17,13 +17,34 @@ autoinstall:
   packages:
     - qemu-guest-agent
     - openssh-server
-storage:
-    layout:
-      name: direct
-    # This 'swap' block is often required to prevent the installer 
-    # from asking about swap file placement.
-    swap:
-      size: 0
+  storage:
+    grub:
+      reinstall_grub: true
+    config:
+      - type: disk
+        id: disk-0
+        path: /dev/sda
+        ptable: gpt
+        overwrite: true
+        wipe: superblock-recursive
+      - type: partition
+        id: partition-bios
+        device: disk-0
+        size: 1M
+        flag: bios_grub
+      - type: partition
+        id: partition-0
+        device: disk-0
+        size: -1
+        wipe: superblock
+      - type: format
+        id: format-0
+        fstype: ext4
+        volume: partition-0
+      - type: mount
+        id: mount-0
+        device: format-0
+        path: /
   # Using late-commands as a backup to ensure the agent starts
   late-commands:
     - curtin in-target -- target systemctl enable qemu-guest-agent
