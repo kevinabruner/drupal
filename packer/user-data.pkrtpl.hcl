@@ -7,18 +7,15 @@ autoinstall:
     hostname: packer-drupal
     username: kevin
     password: "$6$HFFPPnhKmtgvZKvJ$HPlCLq8z9Dswz8nEJxUvtMsG3z4ZhriLpZiYirybfzy0vTb6boR//sErEIhZ0mhnyqIUrUrr6HYZjWRykCLXu/"
-  # In 24.04, it is safest to put the key directly in the ssh section like this
   ssh:
     install-server: true
     authorized-keys:
       - |
         ${ssh_key}
-  # Moved to the top level of autoinstall
   packages:
     - qemu-guest-agent
     - openssh-server
   storage:
-    # This 'grub' section tells the installer where to write the bootloader
     grub:
       reinstall_grub: true
     config:
@@ -26,7 +23,7 @@ autoinstall:
         id: disk-sda
         path: /dev/sda
         ptable: gpt
-        # These three lines together bypass the 'Confirm' prompt
+        # Forces the installer to wipe everything without asking
         preserve: false
         wipe: superblock-recursive
         grub_device: true
@@ -50,4 +47,5 @@ autoinstall:
         device: format-0
         path: /
   late-commands:
-    - curtin in-target -- target systemctl enable qemu-guest-agent
+    # Fixed syntax: removed the extra 'target' word
+    - curtin in-target -- systemctl enable qemu-guest-agent
