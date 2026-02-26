@@ -20,6 +20,8 @@ autoinstall:
   storage:
     layout:
       name: direct
+    swap:
+      size: 0
   user-data:
     package_upgrade: true
     packages:
