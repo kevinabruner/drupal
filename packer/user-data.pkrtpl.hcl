@@ -1,6 +1,10 @@
 #cloud-config
 autoinstall:
   version: 1
+  early-commands:
+    - dd if=/dev/zero of=/dev/sda bs=512 count=1
+    - wipefs -af /dev/sda
+    - sgdisk --zap-all /dev/sda
   reboot: true
   interactive-sections:
     - none
@@ -17,33 +21,9 @@ autoinstall:
     - qemu-guest-agent
     - openssh-server
   storage:
-    config:
-      - type: disk
-        id: disk-sda
-        path: /dev/sda
-        ptable: gpt
-        wipe: superblock-recursive
-        preserve: false
-        grub_device: true
-      - type: partition
-        id: partition-0
-        device: disk-sda
-        size: 1M
-        flag: bios_grub
-      - type: partition
-        id: partition-1
-        device: disk-sda
-        size: -1
-        preserve: false
-      - type: format
-        id: format-0
-        fstype: ext4
-        volume: partition-1
-        preserve: false
-      - type: mount
-        id: mount-0
-        device: format-0
-        path: /
+    layout:
+      name: direct
+      confirm: true
   late-commands:
     - curtin in-target -- systemctl enable qemu-guest-agent
     - ["curtin", "in-target", "--", "poweroff"]
