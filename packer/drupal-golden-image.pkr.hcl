@@ -86,6 +86,7 @@ boot_command = [
 
   ssh_username = "kevin"
   ssh_timeout  = "15m"
+  ssh_private_key_file = "~/.ssh/id_rsa"
 }
 
 build {
