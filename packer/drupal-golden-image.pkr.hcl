@@ -38,7 +38,6 @@ source "proxmox-iso" "drupal-base" {
   node    = "pve"
   vm_name = "packer-drupal-iso"
 
-  http_bind_address = "192.168.11.17"
 
   # Use the modern boot_iso block
   boot_iso {
@@ -64,6 +63,10 @@ source "proxmox-iso" "drupal-base" {
     bridge   = "vmbr0"
     firewall = false
   }
+
+  http_bind_address = "192.168.11.17"
+  http_port_min     = 8795
+  http_port_max     = 8795
 
   # --- Automation ---
   http_content = {
