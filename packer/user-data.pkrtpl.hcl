@@ -17,7 +17,7 @@ autoinstall:
   packages:
     - qemu-guest-agent
     - openssh-server
-  storage:
+storage:
     grub:
       reinstall_grub: true
     config:
@@ -27,24 +27,41 @@ autoinstall:
         ptable: gpt
         overwrite: true
         wipe: superblock-recursive
+      # 1. BIOS Boot Partition (1MB, no filesystem)
       - type: partition
         id: partition-bios
         device: disk-0
         size: 1M
         flag: bios_grub
+      # 2. Add an EFI partition (Even if not using UEFI, Subiquity 24.04 often expects it for GPT)
       - type: partition
-        id: partition-0
+        id: partition-efi
+        device: disk-0
+        size: 512M
+        flag: boot
+      # 3. Root Partition
+      - type: partition
+        id: partition-root
         device: disk-0
         size: -1
-        wipe: superblock
+      # 4. Formats
       - type: format
-        id: format-0
+        id: format-efi
+        fstype: fat32
+        volume: partition-efi
+      - type: format
+        id: format-root
         fstype: ext4
-        volume: partition-0
+        volume: partition-root
+      # 5. Mounts
       - type: mount
-        id: mount-0
-        device: format-0
+        id: mount-root
+        device: format-root
         path: /
+      - type: mount
+        id: mount-efi
+        device: format-efi
+        path: /boot/efi
   # Using late-commands as a backup to ensure the agent starts
   late-commands:
     - curtin in-target -- target systemctl enable qemu-guest-agent
