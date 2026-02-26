@@ -1,13 +1,6 @@
 #cloud-config
 autoinstall:
   version: 1
-  early-commands:
-    # Force a wipe of all existing signatures and wait for the kernel to sync
-    - wipefs -af /dev/sda
-    - sgdisk --zap-all /dev/sda
-    - partprobe /dev/sda
-    - udevadm settle
-    - sleep 2
   reboot: true
   interactive-sections:
     - none
