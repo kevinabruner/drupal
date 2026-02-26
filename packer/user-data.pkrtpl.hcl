@@ -49,4 +49,3 @@ autoinstall:
         path: /
   late-commands:
     - curtin in-target -- systemctl enable qemu-guest-agent
-    - curtin in-target -- systemctl start qemu-guest-agent
