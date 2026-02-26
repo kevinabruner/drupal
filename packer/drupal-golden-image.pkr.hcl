@@ -81,8 +81,8 @@ source "proxmox-iso" "drupal-base" {
     "c<wait>", 
      
     # 3. Type the boot instruction.  
-    "linux /casper/vmlinuz autoinstall ds=nocloud-net;seedfrom=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=dhcp dev=ens18 --- <enter><wait>",     
-    # 4. Load the ramdisk
+    "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=dhcp net.ifnames=0 --- <enter><wait>"   
+     # 4. Load the ramdisk
     "initrd /casper/initrd<enter><wait>",
      
     # 5. Kick off the boot
