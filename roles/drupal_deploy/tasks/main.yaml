@@ -63,11 +63,11 @@
   notify: Restart Apache
   become: true
 
-- name: "Cron: Create staggered rsync backup (only runs on prod by checking db host variable)"
-  become: true
-  ansible.builtin.cron:
-    name: "Backup CephFS to NFS"        
-    hour: "{{ (3 + groups['repo_' + target_app].index(inventory_hostname)) % 24 }}"
-    minute: "0"
-    job: "grep -q 'environment=prod' /etc/environment && rsync -az --delete {{ ceph_target_dir }}/ {{ nfs_target_dir }}/"
-    user: root
+# - name: "Cron: Create staggered rsync backup (only runs on prod by checking db host variable)"
+#   become: true
+#   ansible.builtin.cron:
+#     name: "Backup CephFS to NFS"        
+#     hour: "{{ (3 + groups['repo_' + target_app].index(inventory_hostname)) % 24 }}"
+#     minute: "0"
+#     job: "grep -q 'environment=prod' /etc/environment && rsync -az --delete {{ ceph_target_dir }}/ {{ nfs_target_dir }}/"
+#     user: root
