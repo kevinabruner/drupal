@@ -1,0 +1,8 @@
+- name: Bake Drupal Golden Image
+  hosts: all
+  become: true
+  roles:
+    - drupal_dependencies
+    - drupal_composer
+    # Do NOT include drupal_db_ops here if it targets a specific DB server
+    # Do NOT include drupal_storage if it mounts environment-specific NFS
