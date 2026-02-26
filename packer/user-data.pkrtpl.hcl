@@ -17,34 +17,18 @@ autoinstall:
     - qemu-guest-agent
     - openssh-server
   storage:
+    grub:
+      device: /dev/sda
+    # Explicitly telling the installer to wipe the disk-id found in your logs
     config:
       - type: disk
         id: disk-sda
         path: /dev/sda
-        ptable: gpt
-        # This is the line that actually kills the "Destructive Action" prompt:
         wipe: superblock-recursive
         preserve: false
-        grub_device: true
-      - type: partition
-        id: partition-bios
-        device: disk-sda
-        size: 1M
-        flag: bios_grub
-      - type: partition
-        id: partition-root
-        device: disk-sda
-        size: -1
-        preserve: false
-      - type: format
-        id: format-root
-        fstype: ext4
-        volume: partition-root
-        preserve: false
-      - type: mount
-        id: mount-root
-        device: format-root
-        path: /
+    layout:
+      name: direct
+      confirm: true
   late-commands:
     - curtin in-target -- systemctl enable qemu-guest-agent
     - ["curtin", "in-target", "--", "poweroff"]
