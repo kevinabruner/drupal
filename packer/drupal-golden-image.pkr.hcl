@@ -55,8 +55,8 @@ source "proxmox-iso" "drupal-base" {
     type         = "scsi"
   }
 
-  cores  = 2
-  memory = 2048
+  cores  = 4
+  memory = 4096
 
   network_adapters {
     model    = "virtio"
