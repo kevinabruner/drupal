@@ -72,11 +72,7 @@ source "proxmox-clone" "drupal-base" {
   cores  = 2
   memory = 1024
   
-  # --- Network/SSH ---
-  # Packer needs to know how to log in to start Ansible
-  ssh_username = "ubuntu" 
-  # If your base template uses a password or specific key:
-  # ssh_password = "your-temp-password"
+
 }
 
 build {
