@@ -35,7 +35,7 @@ source "proxmox-iso" "drupal-base" {
   # Use the modern boot_iso block
   boot_iso {
     type         = "scsi"
-    iso_file     = "truenas-nfs/ubuntu-24.04-live-server-amd64.iso"
+    iso_file     = "truenas-nfs/ubuntu-24.04-live-server-amd64.isdo"
     unmount      = true
   }
 
