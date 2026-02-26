@@ -18,12 +18,34 @@ autoinstall:
     - qemu-guest-agent
     - openssh-server
   storage:
-    layout:
-      name: direct
-    # This 'swap' block is often required to prevent the installer 
-    # from asking about swap file placement.
-    swap:
-      size: 0
-  # Using late-commands as a backup to ensure the agent starts
-  late-commands:
-    - curtin in-target -- target systemctl enable qemu-guest-agent
+    # This 'grub' section tells the installer where to write the bootloader
+    grub:
+      reinstall_grub: true
+    config:
+      - type: disk
+        id: disk-sda
+        path: /dev/sda
+        ptable: gpt
+        # These three lines together bypass the 'Confirm' prompt
+        preserve: false
+        wipe: superblock-recursive
+        grub_device: true
+      - type: partition
+        id: partition-0
+        device: disk-sda
+        size: 1M
+        flag: bios_grub
+      - type: partition
+        id: partition-1
+        device: disk-sda
+        size: -1
+        preserve: false
+      - type: format
+        id: format-0
+        fstype: ext4
+        volume: partition-1
+        preserve: false
+      - type: mount
+        id: mount-0
+        device: format-0
+        path: /
