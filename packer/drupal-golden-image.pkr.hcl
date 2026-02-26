@@ -73,19 +73,11 @@ source "proxmox-iso" "drupal-base" {
 # Give the VM plenty of time to reach the GRUB menu
   boot_wait = "20s" 
   
-  boot_command = [
-    # 1. Escape out of any initial splash menus
+boot_command = [
     "<esc><wait><esc><wait>", 
-     
-    # 2. Enter GRUB command line mode
     "c<wait>", 
-     
-    # 3. Type the boot instruction.  
-    "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=dhcp net.ifnames=0 --- <enter><wait>"   
-     # 4. Load the ramdisk
+    "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=dhcp net.ifnames=0 --- <enter><wait>",
     "initrd /casper/initrd<enter><wait>",
-     
-    # 5. Kick off the boot
     "boot<enter>"
   ]
 
