@@ -11,6 +11,10 @@ variable "ssh_password" {
   sensitive = true
   default   = null 
 }
+variable "proxmox_api_token_secret" {
+  type      = string
+  sensitive = true
+}
 
 variable "proxmox_api_url" { type = string }
 variable "proxmox_api_token_id" { type = string }
@@ -19,7 +23,7 @@ variable "proxmox_api_token_secret" { type = string }
 source "proxmox-clone" "drupal-base" {
 
   proxmox_url = var.proxmox_api_url
-  username    = var.proxmox_api_token_id
+  username    = "terraform@pam!main_terraform"
   password    = var.proxmox_api_token_secret
   #nsecure_skip_tls_verify = true
   
