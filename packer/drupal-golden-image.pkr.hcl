@@ -93,14 +93,14 @@ source "proxmox-iso" "drupal-base" {
 build {
   sources = ["source.proxmox-iso.drupal-base"]
 
-  # Step 1: Ensure qemu-guest-agent is alive so Packer can find the IP
-  provisioner "shell" {
-    inline = [
-      "sudo apt-get update",
-      "sudo apt-get install -y qemu-guest-agent",
-      "sudo systemctl enable --now qemu-guest-agent"
-    ]
-  }
+  # # Step 1: Ensure qemu-guest-agent is alive so Packer can find the IP
+  # provisioner "shell" {
+  #   inline = [
+  #     "sudo apt-get update",
+  #     "sudo apt-get install -y qemu-guest-agent",
+  #     "sudo systemctl enable --now qemu-guest-agent"
+  #   ]
+  # }
 
   # Step 2: Run your existing Ansible roles
   provisioner "ansible" {
