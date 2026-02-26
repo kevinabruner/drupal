@@ -54,11 +54,11 @@ build {
 
   # Step 2: Run your existing Ansible roles
   provisioner "ansible" {
-    playbook_file = "../playbooks/pb-packer-provision.yaml"
+    playbook_file = "./playbooks/pb-packer-provision.yaml"
     user          = "ubuntu"
     use_proxy     = false
     ansible_env_vars = [
-      "ANSIBLE_ROLES_PATH=../roles",
+      "ANSIBLE_ROLES_PATH=./roles",
       "ANSIBLE_HOST_KEY_CHECKING=False"
     ]
     # Pass variables if your roles need them during baking
