@@ -5,6 +5,10 @@ packer {
       source  = "github.com/hashicorp/proxmox"
     }
   }
+  ansible = {
+      version = ">= 1.1.0"
+      source  = "github.com/hashicorp/ansible"
+    }
 }
 variable "ssh_password" {
   type      = string
