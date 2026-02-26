@@ -18,11 +18,29 @@ autoinstall:
     authorized-keys:
       - ${ssh_key}
   storage:
+    grub:
+      reinstall_grub: true
     config:
-      - {ptable: gpt, path: /dev/sda, wipe: superblock-recursive, type: disk, id: disk-sda}
-      - {device: disk-sda, size: -1, wipe: superblock, flag: '', number: 1, preserve: false, type: partition, id: partition-0}
-      - {fstype: ext4, volume: partition-0, preserve: false, type: format, id: format-0}
-      - {device: format-0, path: /, type: mount, id: mount-0}
+      - type: disk
+        id: disk-0
+        # Use /dev/sda for Proxmox SCSI/SATA or /dev/vda for VirtIO
+        path: /dev/sda
+        ptable: gpt
+        overwrite: true
+        wipe: superblock-recursive
+      - type: partition
+        id: partition-0
+        device: disk-0
+        size: -1
+        wipe: superblock
+      - type: format
+        id: format-0
+        fstype: ext4
+        volume: partition-0
+      - type: mount
+        id: mount-0
+        device: format-0
+        path: /
   user-data:
     package_upgrade: true
     packages:
