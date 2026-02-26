@@ -18,10 +18,14 @@ autoinstall:
     - qemu-guest-agent
     - openssh-server
   storage:
+    # Adding this 'grub' block at the same level as 'layout' 
+    # tells the installer where to force the bootloader.
+    grub:
+      device: /dev/sda
     layout:
       name: direct
-    # This 'swap' block is often required to prevent the installer 
-    # from asking about swap file placement.
+      # This is the magic flag for 24.04 to skip the 'Confirm' screen
+      confirm: true 
     swap:
       size: 0
   # Using late-commands as a backup to ensure the agent starts
