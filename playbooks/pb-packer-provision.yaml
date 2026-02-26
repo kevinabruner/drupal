@@ -1,6 +1,8 @@
 - name: Setup templated Drupal install for packer image
   hosts: all
   become: true
+  vars:
+    - target_app: nerdperk
   roles:
     - drupal_dependencies
     - drupal_deploy
