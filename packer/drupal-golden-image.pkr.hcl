@@ -20,7 +20,7 @@ source "proxmox-clone" "drupal-base" {
 
   proxmox_url = var.proxmox_api_url
   username    = var.proxmox_api_token_id
-  token       = var.proxmox_api_token_secret
+  password    = var.proxmox_api_token_secret
   insecure_skip_tls_verify = true
   
 # --- Clone Settings ---
