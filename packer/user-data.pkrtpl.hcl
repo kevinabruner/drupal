@@ -7,22 +7,16 @@ autoinstall:
     hostname: packer-drupal
     username: kevin
     password: "$6$HFFPPnhKmtgvZKvJ$HPlCLq8z9Dswz8nEJxUvtMsG3z4ZhriLpZiYirybfzy0vTb6boR//sErEIhZ0mhnyqIUrUrr6HYZjWRykCLXu/"
-  network:
-    version: 2
-    ethernets:
-      ens18:
-        dhcp4: true
+  # In 24.04, it is safest to put the key directly in the ssh section like this
   ssh:
     install-server: true
     authorized-keys:
       - |
         ${ssh_key}
-  # These are top-level autoinstall keys, NOT inside a user-data block
-  package_upgrade: true
+  # Moved to the top level of autoinstall
   packages:
     - qemu-guest-agent
-  runcmd:
-    - [ systemctl, enable, --now, qemu-guest-agent ]
+    - openssh-server
   storage:
     grub:
       reinstall_grub: true
@@ -46,3 +40,6 @@ autoinstall:
         id: mount-0
         device: format-0
         path: /
+  # Using late-commands as a backup to ensure the agent starts
+  late-commands:
+    - curtin in-target -- target systemctl enable qemu-guest-agent
