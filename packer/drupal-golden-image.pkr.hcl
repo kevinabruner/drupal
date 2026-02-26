@@ -29,34 +29,35 @@ source "proxmox-iso" "drupal-base" {
   token       = var.proxmox_api_token_secret
   insecure_skip_tls_verify = true
 
-  # --- VM Hardware Settings ---
-  node                 = "pve"
-  vm_name              = "packer-drupal-iso-bake"
-  iso_file             = "truenas-nfs/ubuntu-24.04-live-server-amd64.iso" # Ensure this path is correct in your PVE
-  iso_storage_pool     = "truenas-nfs"
-  
-  cores                = 2
-  memory               = 2048
+  node    = "pve"
+  vm_name = "packer-drupal-iso"
 
-# 2. Use a more robust Disk Block (Ensure Type and Storage match)
-  disks {
-    disk_size         = "20G"
-    storage_pool      = "truenas-nfs"
-    type              = "scsi"         # Use 'scsi' or 'virtio'
-    storage_pool_type = "nfs"          # Explicitly tell it it's NFS
+  # Use the modern boot_iso block
+  boot_iso {
+    type         = "scsi"
+    iso_file     = "truenas-nfs/ubuntu-24.04-live-server-amd64.iso"
+    unmount      = true
   }
 
-  # 3. Explicitly set the SCSI Controller to avoid the "Index out of range" panic
+  # Simple disk definition - use type 'scsi' and ensure scsi_controller is set
   scsi_controller = "virtio-scsi-pci"
+  disks {
+    disk_size    = "20G"
+    format       = "raw"
+    storage_pool = "truenas-nfs"
+    type         = "scsi"
+  }
 
-  # 4. Network
+  cores  = 2
+  memory = 2048
+
   network_adapters {
     model    = "virtio"
     bridge   = "vmbr0"
     firewall = false
   }
 
-  # 5. Boot and Cloud-Init
+  # --- Automation ---
   http_directory = "packer" 
   boot_wait      = "10s"
   boot_command   = [
