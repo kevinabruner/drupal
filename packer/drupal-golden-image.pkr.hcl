@@ -51,7 +51,7 @@ source "proxmox-iso" "drupal-base" {
   disks {
     disk_size    = "7G"
     format       = "raw"
-    storage_pool = "truenas-nfs"
+    storage_pool = "local-zfs"
     type         = "scsi"
   }
 
