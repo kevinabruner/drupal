@@ -79,11 +79,11 @@ source "proxmox-iso" "drupal-base" {
   boot_command = [
     "<esc><wait><esc><wait>",
     "c<wait>",
-    "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=dhcp net.ifnames=0 biosdevname=0 ipv6.disable=1 --- <enter><wait>",
+    "linux /casper/vmlinuz ip=dhcp net.ifnames=0 ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ --- autoinstall<enter><wait>",
     "initrd /casper/initrd<enter><wait>",
     "boot<enter>"
   ]
-
+  
   ssh_username = "kevin"
   ssh_timeout  = "5m"
 }
