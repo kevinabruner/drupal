@@ -27,7 +27,7 @@ source "proxmox-clone" "drupal-base" {
 
   proxmox_url = var.proxmox_api_url
   username    = "terraform@pam!main_terraform"
-  password    = var.proxmox_api_token_secret
+  token    = var.proxmox_api_token_secret
   insecure_skip_tls_verify = true
   
 # --- Clone Settings ---
