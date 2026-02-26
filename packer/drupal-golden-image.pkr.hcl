@@ -13,7 +13,7 @@ packer {
 
 locals {
   # Read your actual public key from your home directory
-  my_public_key = file("~/.ssh/id_rsa.pub")
+  my_public_key = trimspace(file("~/.ssh/id_rsa.pub"))
 }
 
 variable "ssh_password" {
