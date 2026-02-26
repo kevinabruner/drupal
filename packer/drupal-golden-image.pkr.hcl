@@ -28,35 +28,20 @@ source "proxmox-clone" "drupal-base" {
   username    = "terraform@pam!main_terraform"
   token       = var.proxmox_api_token_secret
   
-  # Cloud-Init Settings for proxmox-clone
+  # Cloud-Init Settings
   cloud_init              = true
   cloud_init_storage_pool = "truenas-nfs"
 
-  # Direct arguments (No cloud_init_def block needed)
-  user_data = <<-EOF
-    #cloud-config
-    user: kevin
-    ssh_authorized_keys:
-      - ${file("~/.ssh/id_rsa.pub")}
-    packages:
-      - qemu-guest-agent
-    runcmd:
-      - systemctl enable --now qemu-guest-agent
-  EOF
-
-  network_data = <<-EOF
-    version: 2
-    ethernets:
-      eth0:
-        dhcp4: true
-  EOF
+  # Point to the local files we just created
+  # Usingabspath() ensures Packer finds them regardless of where you run the command
+  cloud_init_user_data_file    = "packer/user-data"
+  cloud_init_network_data_file = "packer/network-config"
 
   # --- Clone Settings ---
   node     = "pve"
   clone_vm = "ubuntu-2404-cloud"
   vm_name  = "packer-drupal-bake"
   
-  # Make sure Packer uses your kevin user to connect
   ssh_username = "kevin"
   qemu_agent   = true
   ssh_timeout  = "15m"

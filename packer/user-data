@@ -1,0 +1,9 @@
+#cloud-config
+user: kevin
+ssh_authorized_keys:
+  - $(cat ~/.ssh/id_rsa.pub)
+packages:
+  - qemu-guest-agent
+runcmd:
+  - systemctl enable --now qemu-guest-agent
+  
