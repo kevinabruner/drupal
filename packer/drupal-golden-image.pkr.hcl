@@ -32,7 +32,7 @@ source "proxmox-iso" "drupal-base" {
   # --- VM Hardware Settings ---
   node                 = "pve"
   vm_name              = "packer-drupal-iso-bake"
-  iso_file             = "truenas-nfs:iso/ubuntu-24.04-live-server-amd64.iso" # Ensure this path is correct in your PVE
+  iso_file             = "truenas-nfs/ubuntu-24.04-live-server-amd64.iso" # Ensure this path is correct in your PVE
   iso_storage_pool     = "truenas-nfs"
   
   cores                = 2
