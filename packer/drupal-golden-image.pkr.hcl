@@ -74,17 +74,17 @@ source "proxmox-iso" "drupal-base" {
   boot_command = [
     # 1. Escape out of any initial splash menus
     "<esc><wait><esc><wait>", 
-    
+     
     # 2. Enter GRUB command line mode
     "c<wait>", 
-    
-    # 3. Type the boot instruction. 
-    # Note: We use 'seed' and 'autoinstall' to ensure it doesn't stop.
-    "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=dhcp dev=ens18 --- <enter><wait>"
-    
+     
+    # 3. Type the boot instruction.  
+    # Ensure there is a COMMA right after the closing quote below:
+    "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=dhcp dev=ens18 --- <enter><wait>",
+     
     # 4. Load the ramdisk
     "initrd /casper/initrd<enter><wait>",
-    
+     
     # 5. Kick off the boot
     "boot<enter>"
   ]
