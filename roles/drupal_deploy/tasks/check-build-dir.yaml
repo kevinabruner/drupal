@@ -1,14 +1,10 @@
 - name: Ensure local build directory exists
   delegate_to: localhost 
-  # only run on first host
-  when: inventory_hostname == groups['repo_' + target_app][0]
   ansible.builtin.stat:
     path: "/home/kevin/{{ target_app }}/.build"
   register: build_dir_stat
 
 - name: Halt play if .build is missing
-  # only run on first host
-  when: inventory_hostname == groups['repo_' + target_app][0]
   ansible.builtin.assert:
     that:
       - build_dir_stat.stat.exists
