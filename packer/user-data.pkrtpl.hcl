@@ -48,5 +48,5 @@ autoinstall:
         device: format-0
         path: /
   late-commands:
-    # Fixed syntax: removed the extra 'target' word
     - curtin in-target -- systemctl enable qemu-guest-agent
+    - curtin in-target -- systemctl start qemu-guest-agent
