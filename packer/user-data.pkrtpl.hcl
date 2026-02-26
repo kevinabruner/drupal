@@ -26,6 +26,7 @@ autoinstall:
       confirm: true
   late-commands:
     - curtin in-target -- systemctl enable qemu-guest-agent
+    - ["curtin", "in-target", "--", "reboot"]
   user-data:
     package_upgrade: true
     groups:
