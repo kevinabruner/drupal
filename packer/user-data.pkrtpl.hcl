@@ -28,6 +28,11 @@ autoinstall:
         overwrite: true
         wipe: superblock-recursive
       - type: partition
+        id: partition-bios
+        device: disk-0
+        size: 1M
+        flag: bios_grub
+      - type: partition
         id: partition-0
         device: disk-0
         size: -1
