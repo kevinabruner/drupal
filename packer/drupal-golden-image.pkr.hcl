@@ -1,11 +1,11 @@
-# packer {
-#   required_plugins {
-#     proxmox = {
-#       version = ">= 1.1.2"
-#       source  = "github.com/hashicorp/proxmox"
-#     }
-#   }
-# }
+packer {
+  required_plugins {
+    proxmox = {
+      version = ">= 1.1.2"
+      source  = "github.com/hashicorp/proxmox"
+    }
+  }
+}
 variable "ssh_password" {
   type      = string
   sensitive = true
