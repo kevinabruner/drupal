@@ -34,8 +34,8 @@ source "proxmox-clone" "drupal-base" {
 
   # Point to the local files we just created
   # Usingabspath() ensures Packer finds them regardless of where you run the command
-  cloud_init_user_data_file    = "packer/user-data"
-  cloud_init_network_data_file = "packer/network-config"
+  user_data_file    = "packer/user-data"
+  network_data_file = "packer/network-config"
 
   # --- Clone Settings ---
   node     = "pve"
