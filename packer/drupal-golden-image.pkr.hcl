@@ -1,11 +1,11 @@
-packer {
-  required_plugins {
-    proxmox = {
-      version = ">= 1.1.2"
-      source  = "github.com/hashicorp/proxmox"
-    }
-  }
-}
+# packer {
+#   required_plugins {
+#     proxmox = {
+#       version = ">= 1.1.2"
+#       source  = "github.com/hashicorp/proxmox"
+#     }
+#   }
+# }
 
 variable "proxmox_api_url" { type = string }
 variable "proxmox_api_token_id" { type = string }
