@@ -1,11 +1,13 @@
 #cloud-config
 autoinstall:
   version: 1
+  # ADD THIS: This tells the installer to never stop for user input
+  interactive-sections:
+    - none
   identity:
     hostname: packer-drupal
-    password: "$6$HFFPPnhKmtgvZKvJ$HPlCLq8z9Dswz8nEJxUvtMsG3z4ZhriLpZiYirybfzy0vTb6boR//sErEIhZ0mhnyqIUrUrr6HYZjWRykCLXu/" # 'ubuntu' or your hashed pass
+    password: "$6$HFFPPnhKmtgvZKvJ$HPlCLq8z9Dswz8nEJxUvtMsG3z4ZhriLpZiYirybfzy0vTb6boR//sErEIhZ0mhnyqIUrUrr6HYZjWRykCLXu/"
     username: kevin
-  # Networking configuration moved inside autoinstall
   network:
     network:
       version: 2
@@ -25,4 +27,3 @@ autoinstall:
       - qemu-guest-agent
     runcmd:
       - [ systemctl, enable, --now, qemu-guest-agent ]
-
