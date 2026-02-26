@@ -39,23 +39,27 @@ source "proxmox-iso" "drupal-base" {
   memory               = 2048
   scsi_controller      = "virtio-scsi-pci"
 
+# 2. Use a more robust Disk Block (Ensure Type and Storage match)
+  disks {
+    disk_size         = "20G"
+    storage_pool      = "truenas-nfs"
+    type              = "scsi"         # Use 'scsi' or 'virtio'
+    storage_pool_type = "nfs"          # Explicitly tell it it's NFS
+  }
+
+  # 3. Explicitly set the SCSI Controller to avoid the "Index out of range" panic
+  scsi_controller = "virtio-scsi-pci"
+
+  # 4. Network
   network_adapters {
     model    = "virtio"
     bridge   = "vmbr0"
     firewall = false
   }
 
-  disks {
-    disk_size         = "8G"
-    format            = "raw"
-    storage_pool      = "truenas-nfs"
-    type              = "virtio"
-  }
-
-  # --- Cloud-Init (The "Magic" Part) ---
-  # This tells Packer to serve the user-data/meta-data over a temporary HTTP server
+  # 5. Boot and Cloud-Init
   http_directory = "packer" 
-  boot_wait      = "5s"
+  boot_wait      = "10s"
   boot_command   = [
     "<esc><wait>",
     "c<wait>",
