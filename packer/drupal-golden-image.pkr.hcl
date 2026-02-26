@@ -38,6 +38,8 @@ source "proxmox-iso" "drupal-base" {
   node    = "pve"
   vm_name = "packer-drupal-iso"
 
+  http_ip = "192.168.11.17"
+
   # Use the modern boot_iso block
   boot_iso {
     type         = "scsi"
