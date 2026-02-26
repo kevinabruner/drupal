@@ -75,9 +75,10 @@ source "proxmox-iso" "drupal-base" {
 # Give the VM plenty of time to reach the GRUB menu
   boot_wait = "10s" 
   
-boot_command = [
+  boot_command = [
     "<esc><wait><esc><wait>",
     "c<wait>",
+    # Add 'wipefs' directly to the kernel line to kill signatures before Subiquity starts
     "linux /casper/vmlinuz ip=dhcp ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ --- autoinstall <enter><wait>",
     "initrd /casper/initrd<enter><wait>",
     "boot<enter>"

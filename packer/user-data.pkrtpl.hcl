@@ -24,19 +24,12 @@ autoinstall:
     - qemu-guest-agent
     - openssh-server
   storage:
-    config:
-      - type: disk
-        id: disk-0
-        # Matching by serial or name instead of path often bypasses the cache
-        match:
-          name: "sda"
-        ptable: gpt
-        wipe: superblock-recursive
-        preserve: false
-        grub_device: true
+    layout:
+      name: direct
+      confirm: true
   late-commands:
     - curtin in-target -- systemctl enable qemu-guest-agent
-    - ["curtin", "in-target", "--", "poweroff"]
+    - reboot -f
   user-data:
     package_upgrade: true
     groups:
