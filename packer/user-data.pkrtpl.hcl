@@ -2,14 +2,12 @@
 autoinstall:
   version: 1
   early-commands:
-    # 1. Kill the signatures
+    # Force a wipe of all existing signatures and wait for the kernel to sync
     - wipefs -af /dev/sda
-    # 2. Zap the GPT/MBR tables
     - sgdisk --zap-all /dev/sda
-    # 3. FORCE the kernel to reload the empty partition table
     - partprobe /dev/sda
-    # 4. Give the hardware a 2-second breather to settle
-    - sleep 2
+    - udevadm settle
+    - sleep 15
   reboot: true
   interactive-sections:
     - none
@@ -26,9 +24,34 @@ autoinstall:
     - qemu-guest-agent
     - openssh-server
   storage:
-    layout:
-      name: direct
-      confirm: true
+    config:
+      - type: disk
+        id: disk-sda
+        path: /dev/sda
+        ptable: gpt
+        # These flags are the specific 'Yes' the installer needs
+        preserve: false
+        wipe: superblock-recursive
+        grub_device: true
+      - type: partition
+        id: partition-0
+        device: disk-sda
+        size: 1M
+        flag: bios_grub
+      - type: partition
+        id: partition-1
+        device: disk-sda
+        size: -1
+        preserve: false
+      - type: format
+        id: format-0
+        fstype: ext4
+        volume: partition-1
+        preserve: false
+      - type: mount
+        id: mount-0
+        device: format-0
+        path: /
   late-commands:
     - curtin in-target -- systemctl enable qemu-guest-agent
     - ["curtin", "in-target", "--", "poweroff"]
