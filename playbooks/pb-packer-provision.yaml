@@ -10,4 +10,3 @@
   roles:
     - drupal_dependencies
     - drupal_deploy
-    - drupal_storage

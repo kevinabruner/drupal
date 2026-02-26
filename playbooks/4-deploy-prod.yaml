@@ -1,5 +1,10 @@
 - name: Serial Rolling Deploy for Prod
   hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_prod"
+  vars_files:
+  - /home/kevin/db-server/playbook/vault.yaml
+  - /home/kevin/drupal/group_vars/vault.yaml
+  - /home/kevin/drupal/group_vars/all.yaml
   serial: 1  
   roles:
     - role: terraform_refresh
+    - role: drupal_storage
