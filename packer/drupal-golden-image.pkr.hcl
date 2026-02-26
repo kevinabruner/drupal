@@ -24,43 +24,43 @@ variable "proxmox_api_url" { type = string }
 #variable "proxmox_api_token_id" { type = string }
 
 source "proxmox-clone" "drupal-base" {
-
   proxmox_url = var.proxmox_api_url
   username    = "terraform@pam!main_terraform"
-  token    = var.proxmox_api_token_secret
-  #insecure_skip_tls_verify = true
-
-  # 1. Provide the Cloud-Init configuration
-  # This creates a 'user-data' and 'network-config' file in memory
-  cloud_init              = true
-  cloud_init_storage_pool = "truenas-nfs" # Change to your storage name (e.g., 'ceph', 'local')
-
-  # 2. Inject the config (Exactly what you'd usually do in Terraform)
-  # Replace 'ubuntu' with your template's default user if different
-  ssh_username = "kevin"
+  token       = var.proxmox_api_token_secret
   
-  # This section passes the config to the VM
-  # We use the 'inline' heredoc to define the user/network
-  cloud_init_def {
-    user_data = <<-EOF
-      #cloud-config
-      user: kevin
-      ssh_authorized_keys:
-        - ${file("~/.ssh/id_rsa.pub")}
-      packages:
-        - qemu-guest-agent
-      runcmd:
-        - systemctl enable --now qemu-guest-agent
-    EOF
+  # Cloud-Init Settings for proxmox-clone
+  cloud_init              = true
+  cloud_init_storage_pool = "truenas-nfs"
 
-    # Ensures the VM gets a DHCP address so Packer can find it
-    network_config = <<-EOF
-      version: 2
-      ethernets:
-        eth0:
-          dhcp4: true
-    EOF
-  }
+  # Direct arguments (No cloud_init_def block needed)
+  user_data = <<-EOF
+    #cloud-config
+    user: kevin
+    ssh_authorized_keys:
+      - ${file("~/.ssh/id_rsa.pub")}
+    packages:
+      - qemu-guest-agent
+    runcmd:
+      - systemctl enable --now qemu-guest-agent
+  EOF
+
+  network_data = <<-EOF
+    version: 2
+    ethernets:
+      eth0:
+        dhcp4: true
+  EOF
+
+  # --- Clone Settings ---
+  node     = "pve"
+  clone_vm = "ubuntu-2404-cloud"
+  vm_name  = "packer-drupal-bake"
+  
+  # Make sure Packer uses your kevin user to connect
+  ssh_username = "kevin"
+  qemu_agent   = tru
+  ssh_timeout  = "15m"
+}
   
 # --- Clone Settings ---
   node                 = "pve" # The Proxmox node name
