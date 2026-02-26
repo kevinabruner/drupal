@@ -21,8 +21,6 @@ autoinstall:
       device: /dev/sda
     layout:
       name: direct
-      # This is the specific flag that tells 24.04 
-      # "I know what I'm doing, wipe the disk."
       confirm: true
   late-commands:
     - curtin in-target -- systemctl enable qemu-guest-agent
