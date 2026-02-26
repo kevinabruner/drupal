@@ -71,7 +71,7 @@ source "proxmox-iso" "drupal-base" {
     "/meta-data" = ""
   }
 # Give the VM plenty of time to reach the GRUB menu
-  boot_wait = "20s" 
+  boot_wait = "5s" 
   
 boot_command = [
     "<esc><wait><esc><wait>", 
