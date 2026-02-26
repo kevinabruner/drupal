@@ -93,16 +93,8 @@ source "proxmox-iso" "drupal-base" {
 build {
   sources = ["source.proxmox-iso.drupal-base"]
 
-  # # Step 1: Ensure qemu-guest-agent is alive so Packer can find the IP
-  # provisioner "shell" {
-  #   inline = [
-  #     "sudo apt-get update",
-  #     "sudo apt-get install -y qemu-guest-agent",
-  #     "sudo systemctl enable --now qemu-guest-agent"
-  #   ]
-  # }
 
-  # Step 2: Run your existing Ansible roles
+  # Step 1: Run your existing Ansible roles
   provisioner "ansible" {
     playbook_file = "./playbooks/pb-packer-provision.yaml"
     user          = "kevin"
@@ -117,7 +109,7 @@ build {
     ]
   }
 
-  # Step 3: Final Sanitization 
+  # Step 2: Final Sanitization 
   # This prevents clones from having the same SSH host keys or Machine ID
   provisioner "shell" {
     inline = [
