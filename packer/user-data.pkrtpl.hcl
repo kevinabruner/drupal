@@ -49,3 +49,14 @@ autoinstall:
         path: /
   late-commands:
     - curtin in-target -- systemctl enable qemu-guest-agent
+  user-data:
+    package_upgrade: true
+    groups:
+      - sudo
+    users:
+      - name: kevin
+        groups: [sudo, video, render]
+        shell: /bin/bash
+        sudo: ALL=(ALL) NOPASSWD:ALL
+        ssh_authorized_keys:
+          - ${ssh_key}
