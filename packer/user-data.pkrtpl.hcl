@@ -2,9 +2,14 @@
 autoinstall:
   version: 1
   early-commands:
-    - dd if=/dev/zero of=/dev/sda bs=512 count=1
+    # 1. Kill the signatures
     - wipefs -af /dev/sda
+    # 2. Zap the GPT/MBR tables
     - sgdisk --zap-all /dev/sda
+    # 3. FORCE the kernel to reload the empty partition table
+    - partprobe /dev/sda
+    # 4. Give the hardware a 2-second breather to settle
+    - sleep 2
   reboot: true
   interactive-sections:
     - none
