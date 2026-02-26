@@ -65,7 +65,7 @@ source "proxmox-iso" "drupal-base" {
 
   # --- Automation ---
   http_content = {
-    "/user-data" = templatefile("${path.root}/user-data.pkrtpl.hcl", { ssh_key = local.my_public_key })
+    "/user-data" = templatefile("user-data.pkrtpl.hcl", { ssh_key = local.my_public_key })
     "/meta-data" = ""
   }
 # Give the VM plenty of time to reach the GRUB menu
