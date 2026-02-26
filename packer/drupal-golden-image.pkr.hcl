@@ -81,9 +81,7 @@ source "proxmox-iso" "drupal-base" {
     "c<wait>", 
      
     # 3. Type the boot instruction.  
-    # Ensure there is a COMMA right after the closing quote below:
-    "linux /casper/vmlinuz autoinstall ds=nocloud-net;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=dhcp dev=ens18 --- <enter><wait>",
-     
+    "linux /casper/vmlinuz autoinstall ds=nocloud-net;seedfrom=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ ip=dhcp dev=ens18 --- <enter><wait>",     
     # 4. Load the ramdisk
     "initrd /casper/initrd<enter><wait>",
      
@@ -92,7 +90,7 @@ source "proxmox-iso" "drupal-base" {
   ]
 
   ssh_username = "kevin"
-  ssh_timeout  = "20m"
+  ssh_timeout  = "5m"
 }
 
 build {
