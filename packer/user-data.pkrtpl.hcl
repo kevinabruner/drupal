@@ -18,10 +18,11 @@ autoinstall:
     authorized-keys:
       - ${ssh_key}
   storage:
-    layout:
-      name: direct
-    swap:
-      size: 0
+    config:
+      - {ptable: gpt, path: /dev/sda, wipe: superblock-recursive, type: disk, id: disk-sda}
+      - {device: disk-sda, size: -1, wipe: superblock, flag: '', number: 1, preserve: false, type: partition, id: partition-0}
+      - {fstype: ext4, volume: partition-0, preserve: false, type: format, id: format-0}
+      - {device: format-0, path: /, type: mount, id: mount-0}
   user-data:
     package_upgrade: true
     packages:
