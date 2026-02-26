@@ -85,7 +85,7 @@ boot_command = [
   ]
 
   ssh_username = "kevin"
-  ssh_timeout  = "5m"
+  ssh_timeout  = "15m"
 }
 
 build {
