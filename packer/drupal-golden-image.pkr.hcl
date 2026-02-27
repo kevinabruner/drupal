@@ -26,6 +26,11 @@ variable "proxmox_api_token_secret" {
   sensitive = true
 }
 
+variable "target_app" {
+  type    = string
+  # No default, so it forces you to provide it
+}
+
 variable "proxmox_api_url" { type = string }
 #variable "proxmox_api_token_id" { type = string }
 
@@ -35,7 +40,7 @@ source "proxmox-iso" "drupal-base" {
   token       = var.proxmox_api_token_secret
 
   node    = "pve"
-  vm_name = "packer-drupal-iso"
+  vm_name = "${var.target_app}-golden"
 
 
   # Use the modern boot_iso block
@@ -105,7 +110,7 @@ build {
     ]
     # Pass variables if your roles need them during baking
     extra_arguments = [
-      "--extra-vars", "is_packer_build=true"
+      "--extra-vars", "is_packer_build=true target_app=${var.target_app}"
     ]
   }
 
@@ -124,7 +129,6 @@ build {
       # 1. Get the VM ID from the Packer environment
       # 2. Tell Proxmox to move the disk to TrueNAS
       # 3. Use 'qm move_disk' which is the CLI version of 'Move Storage'
-      "ssh root@pve.jfkhome 'qm move_disk ${build.ID} scsi0 truenas-nfs --delete'"
-    ]
+      "ssh root@your-proxmox-ip 'qm move_disk ${build.ID} scsi0 truenas-nfs --delete'"    ]
   }
 }

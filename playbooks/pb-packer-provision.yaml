@@ -5,8 +5,6 @@
     - /home/kevin/drupal/group_vars/vault.yaml
     - /home/kevin/drupal/group_vars/all.yaml
   become: true
-  vars:
-    - target_app: nerdperk
   roles:
     - drupal_dependencies
     - drupal_deploy
