@@ -48,7 +48,7 @@ source "proxmox-iso" "drupal-base" {
   # Simple disk definition - use type 'scsi' and ensure scsi_controller is set
   scsi_controller = "virtio-scsi-pci"
   disks {
-    disk_size    = "7G"
+    disk_size    = "6G"
     format       = "raw"
     storage_pool = "local-zfs"
     type         = "scsi"
