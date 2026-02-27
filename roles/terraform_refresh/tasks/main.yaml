@@ -1,18 +1,8 @@
-## 1. Refresh once (Parallel/Fast)
-- name: Pre-refresh Terraform state
-  delegate_to: terraform
-  run_once: true
-  command: terraform apply -refresh-only -auto-approve
-  args:
-    chdir: "/home/kevin/terraform"
-
-## 2. Recreate (Sequential/Fast)
 - name: Force Terraform to recreate node
   delegate_to: terraform
   shell: |
     terraform apply \
       -replace='proxmox_vm_qemu.proxmox_vms["{{ inventory_hostname }}"]' \
-      -refresh=false \
       -auto-approve
   args:
     chdir: "/home/kevin/terraform"
