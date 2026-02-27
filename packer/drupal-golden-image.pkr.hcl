@@ -98,16 +98,7 @@ source "proxmox-iso" "drupal-base" {
 build {
   sources = ["source.proxmox-iso.drupal-base"]
 
-  # Step 1: Clean up any existing template with the same name
-  provisioner "shell-local" {
-    inline = [
-      "echo 'Checking for existing template: ${var.target_app}-golden'",
-      "ssh root@pve 'VMID=$(qm list | grep \"${var.target_app}-golden\" | awk \"{print \\$1}\"); if [ ! -z \"$VMID\" ]; then echo \"Destroying old template ID: $VMID\"; qm destroy $VMID --purge; fi'"
-    ]
-  }
-
-
-  # Step 2: Run your existing Ansible roles
+  # Step 1: Run your existing Ansible roles
   provisioner "ansible" {
     playbook_file = "./playbooks/pb-packer-provision.yaml"
     user          = "kevin"
@@ -122,7 +113,7 @@ build {
     ]
   }
 
-  # Step 3: Final Sanitization 
+  # Step 2: Final Sanitization 
   # This prevents clones from having the same SSH host keys or Machine ID
   provisioner "shell" {
     inline = [
