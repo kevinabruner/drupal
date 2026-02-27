@@ -1,11 +1,10 @@
 alias ans-run='git pull && time ansible-playbook'
 bake() {
+    local APP_NAME="$1"
     if [ -z "$1" ]; then
         echo "Error: You must provide a target_app name (e.g., bake nerdperk)"
         return 1
     fi
-
-    APP_NAME=$1
 
     echo "--- Pulling latest configuration ---"
     git pull || { echo "Git pull failed"; return 1; }
