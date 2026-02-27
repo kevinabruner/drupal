@@ -11,7 +11,7 @@ bake() {
     git pull || { echo "Git pull failed"; return 1; }
 
     echo "--- Checking for existing template: ${app_name}-golden ---"
-    ssh root@$pve_node "VMID=\$(qm list | grep \"${app_name}-golden\" | awk '{print \$1}'); if [ ! -z \"\$VMID\" ]; then echo \"Destroying old template ID: \$VMID\"; qm destroy \$VMID --purge; fi"
+    ssh root@pve "VMID=\$(qm list | grep \"${app_name}-golden\" | awk '{print \$1}'); if [ ! -z \"\$VMID\" ]; then echo \"Destroying old template ID: \$VMID\"; qm destroy \$VMID --purge; fi"
 
     echo "--- Baking Gold Image for: $APP_NAME ---"
     time packer build \
