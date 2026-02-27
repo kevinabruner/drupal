@@ -12,7 +12,6 @@ packer {
 }
 
 locals {
-  # Read your actual public key from your home directory
   my_public_key = trimspace(file("~/.ssh/id_rsa.pub"))
 }
 
@@ -21,6 +20,7 @@ variable "ssh_password" {
   sensitive = true
   default   = null 
 }
+
 variable "proxmox_api_token_secret" {
   type      = string
   sensitive = true
@@ -28,11 +28,10 @@ variable "proxmox_api_token_secret" {
 
 variable "target_app" {
   type    = string
-  # No default, so it forces you to provide it
+  # No default, must be an argument
 }
 
 variable "proxmox_api_url" { type = string }
-#variable "proxmox_api_token_id" { type = string }
 
 source "proxmox-iso" "drupal-base" {
   proxmox_url = var.proxmox_api_url
@@ -83,7 +82,6 @@ source "proxmox-iso" "drupal-base" {
   boot_command = [
     "<esc><wait><esc><wait>",
     "c<wait>",
-    # Add 'wipefs' directly to the kernel line to kill signatures before Subiquity starts
     "linux /casper/vmlinuz ip=dhcp ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ --- autoinstall <enter><wait>",
     "initrd /casper/initrd<enter><wait>",
     "boot<enter>"
