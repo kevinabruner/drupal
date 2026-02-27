@@ -104,9 +104,9 @@ build {
       "ANSIBLE_ROLES_PATH=./roles",
       "ANSIBLE_HOST_KEY_CHECKING=False"
     ]
-    # Pass variables if your roles need them during baking
+    # Pass target_app variable
     extra_arguments = [
-      "--extra-vars", "is_packer_build=true target_app=${var.target_app}"
+      "--extra-vars", "target_app=${var.target_app}"
     ]
   }
 
