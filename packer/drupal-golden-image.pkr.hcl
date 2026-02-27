@@ -128,6 +128,6 @@ build {
       # 1. Get the VM ID from the Packer environment
       # 2. Tell Proxmox to move the disk to TrueNAS
       # 3. Use 'qm move_disk' which is the CLI version of 'Move Storage'
-      "ssh root@your-proxmox-ip 'qm move_disk ${build.ID} scsi0 truenas-nfs --delete'"    ]
+      "ssh root@pve 'qm move_disk ${build.ID} scsi0 truenas-nfs --delete'"    ]
   }
 }
