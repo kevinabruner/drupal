@@ -71,12 +71,11 @@ source "proxmox-iso" "drupal-base" {
   http_port_min     = 8795
   http_port_max     = 8795
 
-  # --- Automation ---
   http_content = {
     "/user-data" = templatefile("user-data.pkrtpl.hcl", { ssh_key = local.my_public_key })
     "/meta-data" = ""
   }
-# Give the VM plenty of time to reach the GRUB menu
+
   boot_wait = "10s" 
   
   boot_command = [
