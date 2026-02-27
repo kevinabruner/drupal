@@ -112,7 +112,6 @@ build {
   }
 
   # Step 2: Final Sanitization 
-  # This prevents clones from having the same SSH host keys or Machine ID
   provisioner "shell" {
     inline = [
       "sudo rm -f /etc/ssh/ssh_host_*",
@@ -123,9 +122,7 @@ build {
   }
   post-processor "shell-local" {
     inline = [
-      # 1. Get the VM ID from the Packer environment
-      # 2. Tell Proxmox to move the disk to TrueNAS
-      # 3. Use 'qm move_disk' which is the CLI version of 'Move Storage'
+      # copy the disk from local-zfs to NAS (nfs)
       "ssh root@pve 'qm move_disk ${build.ID} scsi0 truenas-nfs --delete'"    ]
   }
 }
