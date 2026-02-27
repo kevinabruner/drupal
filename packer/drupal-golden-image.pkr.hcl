@@ -50,7 +50,7 @@ source "proxmox-iso" "drupal-base" {
   disks {
     disk_size    = "7G"
     format       = "raw"
-    storage_pool = "truenas-nfs"
+    storage_pool = "local-zfs"
     type         = "scsi"
   }
 
@@ -117,6 +117,14 @@ build {
       "sudo truncate -s 0 /etc/machine-id",
       "sudo apt-get clean",
       "sudo sync"
+    ]
+  }
+  post-processor "shell-local" {
+    inline = [
+      # 1. Get the VM ID from the Packer environment
+      # 2. Tell Proxmox to move the disk to TrueNAS
+      # 3. Use 'qm move_disk' which is the CLI version of 'Move Storage'
+      "ssh root@pve.jfkhome 'qm move_disk ${build.ID} scsi0 truenas-nfs --delete'"
     ]
   }
 }
