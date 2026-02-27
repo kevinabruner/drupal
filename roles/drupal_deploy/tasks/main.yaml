@@ -63,6 +63,16 @@
   notify: Restart Apache
   become: true
 
+- name: Clean up Cloud-Init for cloning
+  ansible.builtin.shell: |
+    # Remove the installer-specific logs and cache
+    rm -rf /var/lib/cloud/instances/*
+    # Reset the machine-id so clones get unique IDs
+    truncate -s 0 /etc/machine-id
+    # Tell cloud-init to run again on next boot
+    cloud-init clean --logs
+  become: true
+
 # - name: "Cron: Create staggered rsync backup (only runs on prod by checking db host variable)"
 #   become: true
 #   ansible.builtin.cron:
