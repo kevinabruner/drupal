@@ -16,9 +16,9 @@
   shell: |
     packer build \
       -var "target_app={{ target_app }}" \
-      -var-file="packer/variables.pkrvars.hcl" \
-      -var-file="packer/secret.pkrvars.hcl" \
-      packer/drupal-golden-image.pkr.hcl
+      -var-file="{{ git_dir }}/packer/variables.pkrvars.hcl" \
+      -var-file="{{ git_dir }}/packer/secret.pkrvars.hcl" \
+      {{ git_dir }}/packer/drupal-golden-image.pkr.hcl
   args:
     chdir: "{{ playbook_dir }}"
   # environment:
