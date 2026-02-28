@@ -22,3 +22,4 @@
     fi
   register: destroy_output
   changed_when: "'Destroying' in destroy_output.stdout"
+
