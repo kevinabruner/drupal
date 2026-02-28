@@ -1,0 +1,5 @@
+- name: Build Drupal centrally
+  hosts: "localhost"
+  gather_facts: false
+  roles:
+    - packer_bake

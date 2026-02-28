@@ -6,3 +6,5 @@ application: ansible
 env: "{{ custom_fields.dev_or_prod }}"
 ceph_target_dir: /var/www/html/sites/default/files
 nfs_target_dir: /home/{{ ansible_user }}/nfs-files
+target_app: UNDEFINED
+pve_node: pve

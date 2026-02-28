@@ -1,6 +1,3 @@
-- name: Verify build artifact exists before proceeding
-  include_tasks: check-build-dir.yaml
-
 - name: Unmount storage before cleanup
   ansible.posix.mount:
     path: "{{ item }}"
