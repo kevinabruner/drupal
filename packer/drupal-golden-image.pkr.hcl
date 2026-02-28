@@ -96,7 +96,7 @@ build {
   sources = ["source.proxmox-iso.drupal-base"]
 
   # Step 0: Run your pre-flight checklist
-  provisioner "ansible-local" {
+  provisioner "ansible" {
     playbook_file = "./playbooks/_packer-prebake.yaml"
     user          = "kevin"
     use_proxy     = false
