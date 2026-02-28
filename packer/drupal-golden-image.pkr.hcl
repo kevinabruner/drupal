@@ -102,7 +102,6 @@ build {
   # Step 1: Run your existing Ansible roles
   provisioner "ansible" {
     playbook_file = var.playbook_path
-    playbook_file = "./playbooks/_packer-build.yaml"
     user          = "kevin"
     use_proxy     = false
     ansible_env_vars = [
