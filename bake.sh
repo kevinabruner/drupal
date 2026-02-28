@@ -30,6 +30,7 @@ ansible-playbook playbooks/_packer-preflight.yaml -e "target_app=$app_name"
 echo "--- Baking Gold Image for: $app_name ---"
 time packer build \
     -var "target_app=$app_name" \
+    -var "proxmox_vmid=$VMID" \
     -var-file="packer/variables.pkrvars.hcl" \
     -var-file="packer/secret.pkrvars.hcl" \
     packer/drupal-golden-image.pkr.hcl
