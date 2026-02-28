@@ -9,7 +9,7 @@ echo "--- Pulling latest configuration ---"
 git pull || { echo "Git pull failed"; return 1; }
 
 echo "--- Running Pre-flight Checklist ---"
-ans-run playbooks/_packer-preflight.yaml -e "target_app=$app_name"
+ansible-playbook playbooks/_packer-preflight.yaml -e "target_app=$app_name"
 
 echo "--- Baking Gold Image for: $app_name ---"
 time packer build \
