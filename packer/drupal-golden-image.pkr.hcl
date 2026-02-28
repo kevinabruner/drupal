@@ -8,10 +8,6 @@ packer {
       version = ">= 1.1.0"
       source  = "github.com/hashicorp/ansible"
     }
-    netbox = {
-      version = ">= 0.0.1"
-      source  = "github.com/smutel/netbox"
-    }
   }
 }
 
