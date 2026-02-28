@@ -95,21 +95,6 @@ source "proxmox-iso" "drupal-base" {
 build {
   sources = ["source.proxmox-iso.drupal-base"]
 
-  # Step 0: Run your pre-flight checklist
-  provisioner "ansible" {
-    playbook_file = "./playbooks/_packer-prebake.yaml"
-    user          = "kevin"
-    use_proxy     = false
-    ansible_env_vars = [
-      "ANSIBLE_ROLES_PATH=./roles",
-      "ANSIBLE_HOST_KEY_CHECKING=False"
-    ]
-    # Pass target_app variable
-    extra_arguments = [
-      "--extra-vars", "target_app=${var.target_app}"
-    ]
-  }
-
   # Step 1: Run your existing Ansible roles
   provisioner "ansible" {
     playbook_file = "./playbooks/_packer-build.yaml"
