@@ -1,5 +1,5 @@
 - name: Serial Rolling Deploy for dev and prod
-  hosts: "repo_{{ target_app | default('UNDEFINED') }}"
+  hosts: "repo_{{ target_app | default('UNDEFINED') }}:&role_drupal"
   serial: 1  
   roles:
     - role: terraform_refresh

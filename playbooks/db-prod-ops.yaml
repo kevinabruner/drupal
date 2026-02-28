@@ -1,4 +1,4 @@
 - name: Database operations for prod
-  hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_prod"
+  hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_prod:&role_drupal"
   roles:
     - role: drupal_db_ops
