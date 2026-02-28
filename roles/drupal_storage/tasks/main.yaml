@@ -17,22 +17,20 @@
     - "{{ ceph_target_dir }}"
   become: true
 
-- name: Configure NFS in fstab (Offline)
+- name: Configure NFS in fstab (Offline, noauto)
   ansible.posix.mount:
     path: "{{ nfs_target_dir }}"
     src: "{{ nfs_server }}:{{ nfs_share }}"
     fstype: nfs
-    # 'noauto' prevents boot-time mounting during the bake process
     opts: "{{ (nfs_options + ['noauto', '_netdev']) | join(',') }}"
     state: present
   become: true
 
-- name: Configure CephFS in fstab (Offline)
+- name: Configure CephFS in fstab (Offline, noauto)
   ansible.posix.mount:
     path: "{{ ceph_target_dir }}"
     src: "{{ ceph_monitors }}:/{{ target_app }}"
     fstype: ceph
-    # Adding 'noauto' here as well
     opts: "name={{ ceph_user }},secretfile=/etc/ceph/{{ ceph_user }}.secret,_netdev,noauto"
     state: present
   become: true

@@ -1,30 +1,3 @@
-# - name: Verify build artifact exists before proceeding
-#   include_tasks: check-build-dir.yaml
-
-- name: Unmount storage before cleanup
-  ansible.posix.mount:
-    path: "{{ item }}"
-    state: unmounted
-  loop:
-    - "{{ ceph_target_dir }}"
-    - "{{ nfs_target_dir }}"
-  become: true
-
-- name: Clean web root
-  ansible.builtin.file:
-    path: /var/www/html
-    state: absent
-  become: true
-
-- name: Re-create web root directory
-  ansible.builtin.file:
-    path: /var/www/html
-    state: directory
-    owner: www-data
-    group: www-data
-    mode: '0755'
-  become: true
-
 - name: Sync Drupal Core and Vendor
   ansible.posix.synchronize:
     src: "{{ build_base_path }}/{{ target_app }}/.build/{{ item.src }}/"
@@ -62,22 +35,3 @@
   ansible.builtin.command: a2dissite 000-default.conf
   notify: Restart Apache
   become: true
-
-- name: Clean up Cloud-Init for cloning
-  ansible.builtin.shell: |
-    # Remove the installer-specific logs and cache
-    rm -rf /var/lib/cloud/instances/*
-    # Reset the machine-id so clones get unique IDs
-    truncate -s 0 /etc/machine-id
-    # Tell cloud-init to run again on next boot
-    cloud-init clean --logs
-  become: true
-
-# - name: "Cron: Create staggered rsync backup (only runs on prod by checking db host variable)"
-#   become: true
-#   ansible.builtin.cron:
-#     name: "Backup CephFS to NFS"        
-#     hour: "{{ (3 + groups['repo_' + target_app].index(inventory_hostname)) % 24 }}"
-#     minute: "0"
-#     job: "grep -q 'environment=prod' /etc/environment && rsync -az --delete {{ ceph_target_dir }}/ {{ nfs_target_dir }}/"
-#     user: root

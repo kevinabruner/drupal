@@ -1,6 +1,7 @@
 - name: Build Drupal centrally
   hosts: "localhost"
   gather_facts: false
+  vars_files:
+    - /home/kevin/drupal/group_vars/all.yaml
   roles:
-    - drupal_composer
-      
+    - packer_prebake

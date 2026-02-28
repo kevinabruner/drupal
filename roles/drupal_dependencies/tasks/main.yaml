@@ -6,15 +6,6 @@
         delay: 5
         sleep: 5
 
-    # - name: "Wait for Cloud-Init to finish"
-    #   ansible.builtin.shell: cloud-init status --wait
-    #   become: true
-    #   changed_when: false
-    #   register: cloud_init_result
-    #   until: cloud_init_result is success
-    #   retries: 20  
-    #   delay: 10
-
     - name: "Wait for any background apt processes to finish"
       ansible.builtin.shell: |
         while fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do
@@ -22,27 +13,11 @@
         done
       changed_when: false
 
-- name: Update apt cache (Early stabilization)
-  ansible.builtin.apt:
-    update_cache: yes
-  become: true
-  register: apt_res
-  until: apt_res is success
-  retries: 5
-  delay: 5
-
 - name: Install PHP and Web stack
   ansible.builtin.apt:
     name: "{{ php_packages + system_packages }}"
     state: present
   become: true
-
-- name: "Ensure haveged is started and enabled for random seeds"
-  become: true
-  ansible.builtin.systemd:
-    name: haveged
-    enabled: true
-    state: started
 
 - name: Ensure kevin is in www-data group
   ansible.builtin.user:

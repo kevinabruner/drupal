@@ -97,7 +97,7 @@ build {
 
   # Step 1: Run your existing Ansible roles
   provisioner "ansible" {
-    playbook_file = "./playbooks/build-packer.yaml"
+    playbook_file = "./playbooks/_packer-build.yaml"
     user          = "kevin"
     use_proxy     = false
     ansible_env_vars = [
@@ -122,6 +122,7 @@ build {
   post-processor "shell-local" {
     inline = [
       # copy the disk from local-zfs to NAS (nfs)
-      "ssh root@pve 'qm move_disk ${build.ID} scsi0 truenas-nfs --delete'"    ]
+      "ssh root@pve 'qm move_disk ${build.ID} scsi0 truenas-nfs --delete'"    
+    ]
   }
 }
