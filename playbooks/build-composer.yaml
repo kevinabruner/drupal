@@ -1,5 +1,5 @@
 - name: Build Drupal centrally
-  hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev"
+  hosts: "localhost"
   gather_facts: false
   roles:
     - drupal_composer
