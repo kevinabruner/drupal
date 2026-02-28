@@ -17,7 +17,7 @@
     - "{{ ceph_target_dir }}"
   become: true
 
-- name: Configure NFS in fstab (Offline)
+- name: Configure NFS in fstab (Offline, noauto)
   ansible.posix.mount:
     path: "{{ nfs_target_dir }}"
     src: "{{ nfs_server }}:{{ nfs_share }}"
@@ -26,7 +26,7 @@
     state: present
   become: true
 
-- name: Configure CephFS in fstab (Offline)
+- name: Configure CephFS in fstab (Offline, noauto)
   ansible.posix.mount:
     path: "{{ ceph_target_dir }}"
     src: "{{ ceph_monitors }}:/{{ target_app }}"
