@@ -11,10 +11,10 @@ git pull || { echo "Git pull failed"; return 1; }
 echo "--- Fetching VMID from Inventory ---"
 
 VMID=$(ansible-inventory --list | jq -r '
-  ._meta.hostvars | 
-  to_entries[] | 
-  select(.value.custom_fields.repos == "'"$app_name"'" and .value.custom_fields.dev_or_prod == "dev") | 
-  .value.custom_fields.vmid
+  ._meta.hostvars as $hv |
+  .role_vm_template.hosts[]? | 
+  select($hv[.].custom_fields.repos == "'"$app_name"'" and $hv[.].custom_fields.dev_or_prod == "dev") | 
+  $hv[.].custom_fields.vmid
 ')
 
 if [ "$VMID" == "null" ] || [ -z "$VMID" ]; then
