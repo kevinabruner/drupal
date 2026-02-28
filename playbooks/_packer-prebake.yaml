@@ -4,4 +4,4 @@
   vars_files:
     - /home/kevin/drupal/group_vars/all.yaml
   roles:
-    - packer_bake
+    - packer_prebake
