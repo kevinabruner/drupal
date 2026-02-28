@@ -1,0 +1,4 @@
+- name: Database operations for dev
+  hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev"
+  roles:
+    - role: drupal_db_ops

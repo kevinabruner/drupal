@@ -3,8 +3,3 @@
   serial: 1  
   roles:
     - role: terraform_refresh
-
-- name: Database operations
-  hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev"
-  roles:
-    - role: drupal_db_ops
