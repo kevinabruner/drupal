@@ -13,7 +13,7 @@
   changed_when: "'Destroying' in destroy_output.stdout"
 
 - name: "Bake Gold Image for: {{ target_app }}"
-  community.general.packer:
+  wescale.hashistack.packer:
     path: "{{ git_dir }}/packer/drupal-golden-image.pkr.hcl"
     var_files:
       - "{{ git_dir }}/packer/variables.pkrvars.hcl"

@@ -1,7 +1,5 @@
 - name: Build Drupal centrally
   hosts: "localhost"
   gather_facts: false
-  collections:
-    - community.general
   roles:
     - packer_bake
