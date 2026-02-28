@@ -13,11 +13,13 @@
   changed_when: "'Destroying' in destroy_output.stdout"
 
 - name: "Bake Gold Image for: {{ target_app }}"
-  wescale.hashistack.packer:
-    path: "{{ git_dir }}/packer/drupal-golden-image.pkr.hcl"
-    var_files:
-      - "{{ git_dir }}/packer/variables.pkrvars.hcl"
-      - "{{ git_dir }}/packer/secret.pkrvars.hcl"
-    vars:
-      target_app: "{{ target_app }}"
-  register: packer_result
+  shell: |
+    packer build \
+      -var "target_app={{ target_app }}" \
+      -var-file="packer/variables.pkrvars.hcl" \
+      -var-file="packer/secret.pkrvars.hcl" \
+      packer/drupal-golden-image.pkr.hcl
+  args:
+    chdir: "{{ playbook_dir }}"
+  # environment:
+  #   PACKER_LOG: "1" #Enable for verbose logging
