@@ -32,5 +32,5 @@ These roles and playbooks are designed to manage a number of websites, but are n
     - `ansible-playbook playbooks/deploy-dev.yaml -e target_app=[APP_NAME]`
     - Alternatively, you can simply re-deploy using terraform which will use the new image. 
 4. If your dev servers look good, go ahead and do the same for prod
-    - `ansible-playbook playbooks/deploy-dev.yaml -e target_app=[APP_NAME]`
+    - `ansible-playbook playbooks/deploy-prod.yaml -e target_app=[APP_NAME]`
     - Same as the dev servers, terraform will automatically deploy from the latest golden image.
