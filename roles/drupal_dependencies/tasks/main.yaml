@@ -13,15 +13,6 @@
         done
       changed_when: false
 
-- name: Update apt cache (Early stabilization)
-  ansible.builtin.apt:
-    update_cache: yes
-  become: true
-  register: apt_res
-  until: apt_res is success
-  retries: 5
-  delay: 5
-
 - name: Install PHP and Web stack
   ansible.builtin.apt:
     name: "{{ php_packages + system_packages }}"
