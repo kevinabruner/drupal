@@ -21,6 +21,10 @@ variable "ssh_password" {
   default   = null 
 }
 
+variable "playbook_path" {
+  type = string
+}
+
 variable "proxmox_api_token_secret" {
   type      = string
   sensitive = true
@@ -97,6 +101,7 @@ build {
 
   # Step 1: Run your existing Ansible roles
   provisioner "ansible" {
+    playbook_file = var.playbook_path
     playbook_file = "./playbooks/_packer-build.yaml"
     user          = "kevin"
     use_proxy     = false

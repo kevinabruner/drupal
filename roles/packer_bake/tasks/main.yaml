@@ -20,6 +20,6 @@
       -var-file="{{ git_dir }}/packer/secret.pkrvars.hcl" \
       {{ git_dir }}/packer/drupal-golden-image.pkr.hcl
   args:
-    chdir: "{{ playbook_dir }}"
+    chdir: "{{ git_dir }}"
   # environment:
   #   PACKER_LOG: "1" #Enable for verbose logging
