@@ -1,9 +1,10 @@
-- name: Parallel dev setup
+- name: Serial Rolling Deploy for Dev
   hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev"
-  vars_files:
-  - /home/kevin/db-server/playbook/vault.yaml
-  - /home/kevin/drupal/group_vars/vault.yaml
-  - /home/kevin/drupal/group_vars/all.yaml
   serial: 1  
   roles:
     - role: terraform_refresh
+
+- name: Database operations
+  hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev"
+  roles:
+    - role: drupal_db_ops
