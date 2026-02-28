@@ -19,13 +19,6 @@
     state: present
   become: true
 
-- name: "Ensure haveged is started and enabled for random seeds"
-  become: true
-  ansible.builtin.systemd:
-    name: haveged
-    enabled: true
-    state: started
-
 - name: Ensure kevin is in www-data group
   ansible.builtin.user:
     name: "{{ ansible_user }}"
