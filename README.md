@@ -20,18 +20,17 @@ These roles and playbooks are designed to manage a number of websites, but are n
   - e.g. `ansible-playbook playbooks/deploy-dev.yaml -e "target_app=recursioncomic"`
 
 ## Playbook steps
-1. Create your dev machines by using [netbox](https://netbox.thejfk.ca) (internal link only!) and then deploy them using the [Terraform server](https://github.com/kevinabruner/terraform).
 
-2. On the Ansible controller, first run the composer playbook to build the composer files into a Drupal application. This will run locally on your Ansible controller.
+1. On the Ansible controller, first run the composer playbook to build the composer files into a Drupal application. This will run locally on your Ansible controller.
     - `ansible-playbook playbooks/build-composer.yaml -e target_app=[APP_NAME]`
-3. Once Drupal is built, you can bake a golden image using packer. 
+2. Once Drupal is built, you can bake a golden image using packer. 
     - Packer will automatically invoke it's only playbook for building its image (`_packer-build.yaml`). 
     - There's a basic script in the root of this repo which invokes packer and the `_packer-preflight.yaml` playbook to ensure the previous golden image is destroyed and the previous step of building composer has been run. 
     - You must provide the drupal application as an argument
       - `./bake.sh [APP_NAME]`
-4. You can then deploy to dev using a playbook if your image built correctly.
+3. You can then deploy to dev using a playbook if your image built correctly.
     - `ansible-playbook playbooks/deploy-dev.yaml -e target_app=[APP_NAME]`
     - Alternatively, you can simply re-deploy using terraform which will use the new image. 
-5. If your dev servers look good, go ahead and do the same for prod
+4. If your dev servers look good, go ahead and do the same for prod
     - `ansible-playbook playbooks/deploy-dev.yaml -e target_app=[APP_NAME]`
     - Same as the dev servers, terraform will automatically deploy from the latest golden image.
