@@ -17,3 +17,4 @@ system_packages:
   - htop
   - qemu-guest-agent
   - ceph-common
+  - haveged

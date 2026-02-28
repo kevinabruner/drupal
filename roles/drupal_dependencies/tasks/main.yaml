@@ -6,14 +6,21 @@
         delay: 5
         sleep: 5
 
-    - name: "Wait for Cloud-Init to finish"
-      ansible.builtin.shell: cloud-init status --wait
-      become: true
+    # - name: "Wait for Cloud-Init to finish"
+    #   ansible.builtin.shell: cloud-init status --wait
+    #   become: true
+    #   changed_when: false
+    #   register: cloud_init_result
+    #   until: cloud_init_result is success
+    #   retries: 20  
+    #   delay: 10
+
+    - name: "Wait for any background apt processes to finish"
+      ansible.builtin.shell: |
+        while fuser /var/lib/dpkg/lock-frontend >/dev/null 2>&1; do
+          sleep 5
+        done
       changed_when: false
-      register: cloud_init_result
-      until: cloud_init_result is success
-      retries: 20  
-      delay: 10
 
 - name: Update apt cache (Early stabilization)
   ansible.builtin.apt:
@@ -30,7 +37,12 @@
     state: present
   become: true
 
-# ... [Rest of your tasks remain the same] ...
+- name: "Ensure haveged is started and enabled for random seeds"
+  become: true
+  ansible.builtin.systemd:
+    name: haveged
+    enabled: true
+    state: started
 
 - name: Ensure kevin is in www-data group
   ansible.builtin.user:

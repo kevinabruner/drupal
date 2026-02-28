@@ -1,6 +1,0 @@
-- name: Runs dev and prod Drupal pipelines including image baking. Only use in dire circumstances
-  hosts: localhost
-- name: Import "Full dev pipeline" playbook
-  import_playbook: ./full-dev-pipeline.yaml
-- name: Import "Full prod pipeline" playbook
-  import_playbook: ./full-prod-pipeline.yaml

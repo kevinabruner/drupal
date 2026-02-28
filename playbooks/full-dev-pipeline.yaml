@@ -1,8 +1,0 @@
-- name: Rebuild dev servers from scratch with full drupal application running
-  hosts: localhost
-- name: Import "Wipe dev" playbook
-  import_playbook: 0-wipe-dev.yaml
-- name: Import "Build composer" playbook
-  import_playbook: 1-build-composer.yaml
-- name: Import "Deploy dev" playbook
-  import_playbook: 2-deploy-dev.yaml

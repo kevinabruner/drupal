@@ -1,0 +1,127 @@
+packer {
+  required_plugins {
+    proxmox = {
+      version = ">= 1.1.2"
+      source  = "github.com/hashicorp/proxmox"
+    }
+    ansible = {
+      version = ">= 1.1.0"
+      source  = "github.com/hashicorp/ansible"
+    }
+  }
+}
+
+locals {
+  my_public_key = trimspace(file("~/.ssh/id_rsa.pub"))
+}
+
+variable "ssh_password" {
+  type      = string
+  sensitive = true
+  default   = null 
+}
+
+variable "proxmox_api_token_secret" {
+  type      = string
+  sensitive = true
+}
+
+variable "target_app" {
+  type    = string
+  # No default, must be an argument
+}
+
+variable "proxmox_api_url" { type = string }
+
+source "proxmox-iso" "drupal-base" {
+  proxmox_url = var.proxmox_api_url
+  username    = "terraform@pam!main_terraform"
+  token       = var.proxmox_api_token_secret
+
+  node    = "pve"
+  vm_name = "${var.target_app}-golden"
+
+
+  # Use the modern boot_iso block
+  boot_iso {
+    type         = "scsi"
+    iso_file     = "truenas-nfs:iso/ubuntu-24.04.4-live-server-amd64.iso"
+    unmount      = true
+  }
+
+  # Simple disk definition - use type 'scsi' and ensure scsi_controller is set
+  scsi_controller = "virtio-scsi-pci"
+  disks {
+    disk_size    = "6G"
+    format       = "raw"
+    storage_pool = "local-zfs"
+    type         = "scsi"
+  }
+
+  cores  = 4
+  memory = 4096
+
+  network_adapters {
+    model    = "virtio"
+    bridge   = "vmbr0"
+    firewall = false
+  }
+
+  http_bind_address = "192.168.11.17"
+  http_port_min     = 8795
+  http_port_max     = 8795
+
+  http_content = {
+    "/user-data" = templatefile("user-data.pkrtpl.hcl", { ssh_key = local.my_public_key })
+    "/meta-data" = ""
+  }
+
+  boot_wait = "10s" 
+  
+  boot_command = [
+    "<esc><wait><esc><wait>",
+    "c<wait>",
+    "linux /casper/vmlinuz ip=dhcp ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ --- autoinstall <enter><wait>",
+    "initrd /casper/initrd<enter><wait>",
+    "boot<enter>"
+  ]
+
+  ssh_username = "kevin"
+  ssh_handshake_attempts = 100
+  ssh_timeout  = "15m"
+  ssh_private_key_file = "~/.ssh/id_rsa"
+}
+
+build {
+  sources = ["source.proxmox-iso.drupal-base"]
+
+  # Step 1: Run your existing Ansible roles
+  provisioner "ansible" {
+    playbook_file = "./playbooks/build-packer.yaml"
+    user          = "kevin"
+    use_proxy     = false
+    ansible_env_vars = [
+      "ANSIBLE_ROLES_PATH=./roles",
+      "ANSIBLE_HOST_KEY_CHECKING=False"
+    ]
+    # Pass target_app variable
+    extra_arguments = [
+      "--extra-vars", "target_app=${var.target_app}"
+    ]
+  }
+
+  # Step 2: Final Sanitization 
+  provisioner "shell" {
+    inline = [
+      "sudo rm -f /etc/ssh/ssh_host_*",
+      "sudo truncate -s 0 /etc/machine-id",
+      "sudo apt-get clean",
+      "sudo sync"
+    ]
+  }
+  post-processor "shell-local" {
+    inline = [
+      # copy the disk from local-zfs to NAS (nfs)
+      "ssh root@pve 'qm move_disk ${build.ID} scsi0 truenas-nfs --delete'"    ]
+  }
+}
