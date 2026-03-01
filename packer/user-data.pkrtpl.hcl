@@ -1,11 +1,11 @@
 #cloud-config
 autoinstall:
   version: 1
-  apt:
-    primary:
-      - arches: [default]
-        uri: http://mirror.jfkhome/
-    geoip: false
+  # apt:
+  #   primary:
+  #     - arches: [default]
+  #       uri: http://mirror.jfkhome/
+  #   geoip: false
   reboot: true
   interactive-sections:
     - none
