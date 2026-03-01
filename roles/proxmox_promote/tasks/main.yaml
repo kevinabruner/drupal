@@ -3,6 +3,7 @@
     # Bruteforce cleanup of config and disks if they exist
     rm -f /etc/pve/qemu-server/{{ new_template_id }}.conf
     qm destroy {{ new_template_id }} --purge 
+  become: true
   delegate_to: "{{ pve_node }}"
   failed_when: false
 
