@@ -12,12 +12,19 @@
     fail_msg: "ERROR: The directory '/home/kevin/{{ target_app }}/.build' was not found. Ya gotta build it first, dumb-dumb"
     success_msg: "Build directory for {{ target_app }} verified. Proceeding with deployment."
 
-- name: Find and destroy existing golden template on Proxmox with id {{ vmid }}
+- name: Check if VM {{ vmid }} exists
+  command: "qm status {{ vmid }}"
   delegate_to: "{{ pve_node }}"
-  remote_user: root
-  shell: |
-      qm destroy {{ vmid }} --purge
-  register: destroy_output
-  changed_when: "'Destroying' in destroy_output.stdout"
+  register: vm_status
+  failed_when: false
+  changed_when: false
   become: true
 
+- name: Destroy existing golden template {{ vmid }}
+  shell: |
+    qm destroy {{ vmid }} --purge
+    rm -f /etc/pve/qmu-server/{{ vmid }}.conf
+  delegate_to: "{{ pve_node }}"
+  become: true
+  when: vm_status.rc == 0
+  register: destroy_output
