@@ -22,7 +22,7 @@ if [ "$VMID" == "null" ] || [ -z "$VMID" ]; then
     exit 1
 fi
 
-echo "--- Found VMID: $VMID for host: $TARGET_HOST ---"
+echo "--- Found VMID: $VMID  ---"
 
 echo "--- Running Pre-flight Checklist ---"
 ansible-playbook playbooks/_packer-preflight.yaml -e "target_app=$app_name"
