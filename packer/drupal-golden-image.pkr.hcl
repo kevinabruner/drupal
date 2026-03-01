@@ -45,7 +45,7 @@ source "proxmox-iso" "drupal-base" {
   token       = var.proxmox_api_token_secret
 
   node    = "pve"
-  vm_name = "${var.target_app}-golden"
+  vm_name = "${var.target_app}-dev-golden"
 
 
   # Use the modern boot_iso block
