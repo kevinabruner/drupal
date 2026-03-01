@@ -1,3 +1,10 @@
+- name: "DEBUG: Show resolved hostnames and available variables"
+  debug:
+    msg: 
+      - "Target App: {{ target_app }}"
+      - "Resolved Dev Host: {{ dev_host }}"
+      - "Resolved Prod Host: {{ prod_host }}"
+
 - name: "Purge existing Prod image {{ new_template_id }}"
   shell: |
     # Bruteforce cleanup of config and disks if they exist
