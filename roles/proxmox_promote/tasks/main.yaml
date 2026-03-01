@@ -8,9 +8,7 @@
 
 - name: "Clone Dev to Prod ID"
   shell: >
-    /usr/sbin/qm clone {{ vmid_to_clone }} {{ new_template_id }} \
-    --full --name {{ prod_host }} \
-    --storage {{ golden_storage }} \
+    /usr/sbin/qm clone {{ vmid_to_clone }} {{ new_template_id }} --full --name {{ prod_host }} --storage {{ golden_storage }} 
   delegate_to: "{{ pve_node }}"
 
 
