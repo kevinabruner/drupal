@@ -1,33 +1,17 @@
----
-- name: "Promote {{ target_app }} from Dev to Prod"
-  hosts: localhost
-  gather_facts: false
-  vars:
-    # Resolve Dev/Prod host identities from inventory intersections
-    dev_host: "{{ (groups['repo_' ~ target_app] | intersect(groups['env_dev']) | intersect(groups['role_vm_template']))[0] }}"
-    prod_host: "{{ (groups['repo_' ~ target_app] | intersect(groups['env_prod']) | intersect(groups['role_vm_template']))[0] }}"
-    
-    # Map vars for readability in shell commands
-    vmid_to_clone: "{{ hostvars[dev_host].vmid }}"
-    new_template_id: "{{ hostvars[prod_host].vmid }}"
-    pve_node: "pve"
-    golden_storage: "truenas-nfs"
+- name: "Purge existing Prod image {{ new_template_id }}"
+  shell: |
+    # Bruteforce cleanup of config and disks if they exist
+    rm -f /etc/pve/qemu-server/{{ new_template_id }}.conf
+    qm destroy {{ new_template_id }} --purge || true
+  delegate_to: "{{ pve_node }}"
+  failed_when: false
 
-  tasks:
-    - name: "Purge existing Prod image {{ new_template_id }}"
-      shell: |
-        # Bruteforce cleanup of config and disks if they exist
-        rm -f /etc/pve/qemu-server/{{ new_template_id }}.conf
-        qm destroy {{ new_template_id }} --purge || true
-      delegate_to: "{{ pve_node }}"
-      failed_when: false
-
-    - name: "Clone Dev to Prod ID"
-      shell: >
-        /usr/sbin/qm clone {{ vmid_to_clone }} {{ new_template_id }} 
-        --full --name {{ prod_host }} 
-        --storage {{ golden_storage }}
-      delegate_to: "{{ pve_node }}"
+- name: "Clone Dev to Prod ID"
+  shell: >
+    /usr/sbin/qm clone {{ vmid_to_clone }} {{ new_template_id }} 
+    --full --name {{ prod_host }} 
+    --storage {{ golden_storage }}
+  delegate_to: "{{ pve_node }}"
 
 
     
