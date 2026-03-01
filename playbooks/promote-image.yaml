@@ -7,8 +7,8 @@
     prod_host: "{{ (groups['repo_' ~ target_app] | intersect(groups['env_prod']) | intersect(groups['role_vm_template']))[0] }}"
     
     # Map vars for readability in shell commands
-    vmid_to_clone: "{{ hostvars[dev_host].vmid }}"
-    new_template_id: "{{ hostvars[prod_host].vmid }}"
+    vmid_to_clone: "{{ hostvars[dev_host].custom_fields.vmid }}"
+    new_template_id: "{{ hostvars[prod_host].custom_fields.vmid }}"
     pve_node: "pve"
     golden_storage: "truenas-nfs"
 
