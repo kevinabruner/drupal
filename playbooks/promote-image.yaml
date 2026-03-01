@@ -1,17 +1,5 @@
 - name: "Promote {{ target_app }} from Dev to Prod"
   hosts: localhost
   gather_facts: false
-  vars:
-    # Resolve Dev/Prod host identities from inventory intersections
-    dev_host: "{{ (groups['repo_' ~ target_app] | intersect(groups['env_dev']) | intersect(groups['role_vm_template']))[0] }}"
-    prod_host: "{{ (groups['repo_' ~ target_app] | intersect(groups['env_prod']) | intersect(groups['role_vm_template']))[0] }}"
-    
-    # Map vars for readability in shell commands
-    vmid_to_clone: "{{ hostvars[dev_host].custom_fields.vmid }}"
-    new_template_id: "{{ hostvars[prod_host].custom_fields.vmid }}"
-    pve_pool: "{{ hostvars[prod_host].custom_fields.proxmox_pool }}"
-    pve_node: "pve"
-    golden_storage: "truenas-nfs"
-
   roles:
     - proxmox_promote
