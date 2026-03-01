@@ -19,4 +19,5 @@
       qm destroy {{ vmid }} --purge
   register: destroy_output
   changed_when: "'Destroying' in destroy_output.stdout"
+  become: true
 
