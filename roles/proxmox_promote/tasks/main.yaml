@@ -5,6 +5,25 @@
       - "Resolved Dev Host: {{ dev_host }}"
       - "Resolved Prod Host: {{ prod_host }}"
 
+- name: "DEBUG: Inspect Dev Host Variables"
+  debug:
+    var: hostvars[dev_host]
+  when: dev_host != 'NOT_FOUND'
+
+- name: "DEBUG: Inspect Prod Host Variables"
+  debug:
+    var: hostvars[prod_host]
+  when: prod_host != 'NOT_FOUND'
+
+- name: "Validate Variables exist"
+  assert:
+    that:
+      - dev_host != 'NOT_FOUND'
+      - prod_host != 'NOT_FOUND'
+      - hostvars[dev_host].vmid is defined
+      - hostvars[prod_host].vmid is defined
+    fail_msg: "Required variables (vmid) are missing from the inventory for the resolved hosts."
+
 - name: "Purge existing Prod image {{ new_template_id }}"
   shell: |
     # Bruteforce cleanup of config and disks if they exist
