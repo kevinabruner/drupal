@@ -46,6 +46,7 @@ source "proxmox-iso" "drupal-base" {
 
   node    = "pve"
   vm_name = "${var.target_app}-dev-golden"
+  pool     = "Template"
 
 
   # Use the modern boot_iso block
