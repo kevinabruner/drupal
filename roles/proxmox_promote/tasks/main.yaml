@@ -17,6 +17,6 @@
   become: true
 
 - name: Convert Prod ID to Template
-  command: "/usr/sbin/qm template {{ prod_vmid }}"
+  command: "/usr/sbin/qm template {{ new_template_id }}"
   delegate_to: "{{ proxmox_node }}"
   become: true
