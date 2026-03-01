@@ -1,0 +1,6 @@
+- name: Promote dev image to prod
+  hosts: "localhost"
+  gather_facts: false
+  roles:
+    - proxmox_promote
+      
