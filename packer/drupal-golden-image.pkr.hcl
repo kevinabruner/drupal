@@ -120,9 +120,10 @@ build {
   # Step 2: Final Sanitization 
   provisioner "shell" {
     inline = [
-      "sudo rm -f /etc/ssh/ssh_host_*",
+      "sudo cloud-init clean --logs", # Crucial: Tells the OS "You haven't booted yet"
+      "sudo rm -f /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg", # Fix for Ubuntu 24.04
+      "sudo rm -f /etc/netplan/00-installer-config.yaml", # Remove Packer's network config
       "sudo truncate -s 0 /etc/machine-id",
-      "sudo apt-get clean",
       "sudo sync"
     ]
   }
