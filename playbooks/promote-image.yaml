@@ -9,6 +9,7 @@
     # Map vars for readability in shell commands
     vmid_to_clone: "{{ hostvars[dev_host].custom_fields.vmid }}"
     new_template_id: "{{ hostvars[prod_host].custom_fields.vmid }}"
+    pve_pool: "{{ hostvars[prod_host].custom_fields.proxmox_pool }}"
     pve_node: "pve"
     golden_storage: "truenas-nfs"
 

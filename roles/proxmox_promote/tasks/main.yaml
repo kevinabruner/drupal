@@ -12,7 +12,7 @@
     /usr/sbin/qm clone {{ vmid_to_clone }} {{ new_template_id }} 
     --full --name {{ prod_host }} 
     --storage {{ golden_storage }}
-    --pool {{ custom_fields.proxmox_pool }}
+    --pool {{ pve_pool }}
   delegate_to: "{{ pve_node }}"
   become: true
 
