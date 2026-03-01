@@ -125,6 +125,7 @@ build {
       "sudo rm -f /etc/netplan/00-installer-config.yaml", # Remove Packer's network config
       "sudo truncate -s 0 /etc/machine-id",
       "sudo sync"
+      "sudo rm /etc/environment"
     ]
   }
   post-processor "shell-local" {
