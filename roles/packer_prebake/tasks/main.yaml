@@ -16,7 +16,7 @@
   delegate_to: "{{ pve_node }}"
   remote_user: root
   shell: |
-    VMID=$(qm list | grep "{{ target_app }}-golden" | awk '{print $1}')
+    VMID=$(qm list | grep "{{ target_app }}-dev-golden" | awk '{print $1}')
     if [ -n "$VMID" ]; then
       qm destroy "$VMID" --purge
     fi
