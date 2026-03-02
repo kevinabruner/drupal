@@ -38,7 +38,7 @@ d-i partman/confirm_nooverwrite boolean true
 
 # Package selection
 tasksel tasksel/first multiselect standard, ssh-server
-d-i pkgsel/include string qemu-guest-agent sudo curl
+d-i pkgsel/include string qemu-guest-agent sudo curl cloud-init
 d-i pkgsel/upgrade select full-upgrade
 
 # Boot loader installation
