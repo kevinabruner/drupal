@@ -85,14 +85,19 @@ source "proxmox-iso" "drupal-base" {
 
   boot_wait = "10s" 
   
-  boot_command = [
-    "<esc><wait><esc><wait>",
-    "c<wait>",
-    "linux /casper/vmlinuz ip=dhcp ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ --- autoinstall <enter><wait>",
-    "initrd /casper/initrd<enter><wait>",
-    "boot<enter>"
+boot_command = [
+    "<esc><wait>",
+    "install <wait>",
+    "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+    "debian-installer/locale=en_US.UTF-8 <wait>",
+    "keyboard-configuration/xkb-keymap=us <wait>",
+    "netcfg/get_hostname={{ .Name }} <wait>",
+    "netcfg/get_domain=unassigned-domain <wait>",
+    "fb=false debconf/priority=critical <wait>",
+    "auto=true <wait>",
+    "interface=auto <wait>",
+    "<enter>"
   ]
-
   ssh_username = "kevin"
   ssh_handshake_attempts = 100
   ssh_timeout  = "15m"
