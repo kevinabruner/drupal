@@ -52,7 +52,7 @@ source "proxmox-iso" "drupal-base" {
   # Use the modern boot_iso block
   boot_iso {
     type         = "scsi"
-    iso_file     = "truenas-nfs:iso/debian-13.3.0-amd64.iso"
+    iso_file     = "truenas-nfs:iso/debian-13.3.0-amd64-netinst.iso"
     unmount      = true
   }
 
