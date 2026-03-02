@@ -79,8 +79,7 @@ source "proxmox-iso" "drupal-base" {
   http_port_max     = 8795
 
   http_content = {
-    "/user-data" = templatefile("user-data.pkrtpl.hcl", { ssh_key = local.my_public_key })
-    "/meta-data" = ""
+    "/preseed.cfg" = templatefile("preseed.pkrtpl.hcl", { ssh_key = local.my_public_key })
   }
 
   boot_wait = "10s" 
@@ -98,7 +97,7 @@ boot_command = [
     "interface=auto <wait>",
     "<enter>"
   ]
-  
+
   ssh_username = "kevin"
   ssh_handshake_attempts = 100
   ssh_timeout  = "15m"
