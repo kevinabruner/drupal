@@ -90,9 +90,10 @@ boot_command = [
     "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
     "debian-installer/locale=en_US.UTF-8 <wait>",
     "keyboard-configuration/xkb-keymap=us <wait>",
-    "netcfg/get_hostname=${var.target_app} <wait>", # Changed from {{ .Name }}
+    "netcfg/get_hostname=${var.target_app} <wait>",
     "netcfg/get_domain=unassigned-domain <wait>",
     "fb=false debconf/priority=critical <wait>",
+    "DEBIAN_FRONTEND=noninteractive <wait>", # Forces the installer to never ask questions
     "auto=true <wait>",
     "interface=auto <wait>",
     "<enter>"

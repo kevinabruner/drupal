@@ -59,3 +59,4 @@ d-i preseed/late_command string \
 
 # Avoid that last "Installation complete" message
 d-i finish-install/reboot_inplace boolean true
+d-i cdrom-detect/eject boolean true
