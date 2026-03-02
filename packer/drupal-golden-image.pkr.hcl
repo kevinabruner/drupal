@@ -91,13 +91,14 @@ boot_command = [
     "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
     "debian-installer/locale=en_US.UTF-8 <wait>",
     "keyboard-configuration/xkb-keymap=us <wait>",
-    "netcfg/get_hostname={{ .Name }} <wait>",
+    "netcfg/get_hostname=${var.target_app} <wait>", # Changed from {{ .Name }}
     "netcfg/get_domain=unassigned-domain <wait>",
     "fb=false debconf/priority=critical <wait>",
     "auto=true <wait>",
     "interface=auto <wait>",
     "<enter>"
   ]
+  
   ssh_username = "kevin"
   ssh_handshake_attempts = 100
   ssh_timeout  = "15m"
