@@ -52,7 +52,7 @@ source "proxmox-iso" "drupal-base" {
   # Use the modern boot_iso block
   boot_iso {
     type         = "scsi"
-    iso_file     = "truenas-nfs:iso/ubuntu-24.04.4-live-server-amd64.iso"
+    iso_file     = "truenas-nfs:iso/debian-13.3.0-amd64.iso"
     unmount      = true
   }
 
@@ -121,7 +121,6 @@ build {
   provisioner "shell" {
     inline = [
       "sudo cloud-init clean --logs", # Crucial: Tells the OS "You haven't booted yet"
-      "sudo rm -f /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg", # Fix for Ubuntu 24.04
       "sudo rm -f /etc/netplan/00-installer-config.yaml", # Remove Packer's network config
       "sudo truncate -s 0 /etc/machine-id",
       "sudo sync",
