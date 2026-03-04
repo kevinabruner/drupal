@@ -56,8 +56,12 @@ d-i preseed/late_command string \
     echo "kevin ALL=(ALL) NOPASSWD:ALL" > /target/etc/sudoers.d/kevin; \
     in-target chmod 440 /etc/sudoers.d/kevin; \
     in-target systemctl enable qemu-guest-agent; \
-    in-target mkdir -p /etc/cloud/cloud.cfg.d/; \
-    in-target printf "system_info:\n  network:\n    renderers: [netplan, eni]\n" > /target/etc/cloud/cloud.cfg.d/99_renderers.cfg; 
+    mkdir -p /target/etc/cloud/cloud.cfg.d/; \
+    echo "system_info:" > /target/etc/cloud/cloud.cfg.d/99_renderers.cfg; \
+    echo "  network:" >> /target/etc/cloud/cloud.cfg.d/99_renderers.cfg; \
+    echo "    renderers: [netplan, eni]" >> /target/etc/cloud/cloud.cfg.d/99_renderers.cfg
+
+    
 # Avoid that last "Installation complete" message
 d-i finish-install/reboot_inplace boolean true
 d-i cdrom-detect/eject boolean true
