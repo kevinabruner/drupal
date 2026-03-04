@@ -55,7 +55,7 @@ d-i preseed/late_command string \
     in-target chmod 600 /home/kevin/.ssh/authorized_keys; \
     echo "kevin ALL=(ALL) NOPASSWD:ALL" > /target/etc/sudoers.d/kevin; \
     in-target chmod 440 /etc/sudoers.d/kevin; \
-    in-target systemctl enable qemu-guest-agent
+    in-target systemctl enable qemu-guest-agent; \
     in-target mkdir -p /etc/cloud/cloud.cfg.d/; \
     in-target printf "system_info:\n  network:\n    renderers: [netplan, eni]\n" > /target/etc/cloud/cloud.cfg.d/99_renderers.cfg; \
     in-target systemctl enable systemd-networkd
