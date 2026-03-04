@@ -8,11 +8,17 @@ d-i netcfg/get_hostname string unassigned-hostname
 d-i netcfg/get_domain string unassigned-domain
 d-i netcfg/wireless_wep string
 
-# Mirror settings
-d-i mirror/country string manual
+# Use the local mirror FQDN/IP
 d-i mirror/http/hostname string mirror.jfkhome
 d-i mirror/http/directory string /debian
-d-i mirror/http/proxy string
+
+# Force the installer to use Trixie (Debian 13)
+d-i mirror/suite string trixie
+d-i mirror/codename string trixie
+
+# Handle the security split codified earlier
+d-i apt-setup/security_host string mirror.jfkhome
+d-i apt-setup/security_path string /debian-security
 
 # Account setup
 d-i passwd/root-login boolean false
