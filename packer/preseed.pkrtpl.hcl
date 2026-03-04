@@ -10,7 +10,7 @@ d-i netcfg/wireless_wep string
 
 # Mirror settings
 d-i mirror/country string manual
-d-i mirror/http/hostname string deb.debian.org
+d-i mirror/http/hostname string mirror.jfkhome
 d-i mirror/http/directory string /debian
 d-i mirror/http/proxy string
 
@@ -61,7 +61,7 @@ d-i preseed/late_command string \
     echo "  network:" >> /target/etc/cloud/cloud.cfg.d/99_renderers.cfg; \
     echo "    renderers: [netplan, eni]" >> /target/etc/cloud/cloud.cfg.d/99_renderers.cfg
 
-    
+
 # Avoid that last "Installation complete" message
 d-i finish-install/reboot_inplace boolean true
 d-i cdrom-detect/eject boolean true
