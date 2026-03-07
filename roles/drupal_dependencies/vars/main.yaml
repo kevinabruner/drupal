@@ -1,17 +1,15 @@
 php_packages:
   - php
   - php-gd
-  - php-pdo
   - php-mysql
-  - php-dom
+  - php-xml
   - php-mbstring
   - php-curl
 
 system_packages:
   - apache2
-  - mysql-client
+  - default-mysql-client
   - ncdu
-  - gh
   - vim
   - nfs-common
   - htop

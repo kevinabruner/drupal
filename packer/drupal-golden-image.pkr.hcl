@@ -52,7 +52,7 @@ source "proxmox-iso" "drupal-base" {
   # Use the modern boot_iso block
   boot_iso {
     type         = "scsi"
-    iso_file     = "truenas-nfs:iso/ubuntu-24.04.4-live-server-amd64.iso"
+    iso_file     = "truenas-nfs:iso/debian-13.3.0-amd64-netinst.iso"
     unmount      = true
   }
 
@@ -79,18 +79,24 @@ source "proxmox-iso" "drupal-base" {
   http_port_max     = 8795
 
   http_content = {
-    "/user-data" = templatefile("user-data.pkrtpl.hcl", { ssh_key = local.my_public_key })
-    "/meta-data" = ""
+    "/preseed.cfg" = templatefile("preseed.pkrtpl.hcl", { ssh_key = local.my_public_key })
   }
 
   boot_wait = "10s" 
   
-  boot_command = [
-    "<esc><wait><esc><wait>",
-    "c<wait>",
-    "linux /casper/vmlinuz ip=dhcp ds=nocloud-net\\;s=http://{{ .HTTPIP }}:{{ .HTTPPort }}/ --- autoinstall <enter><wait>",
-    "initrd /casper/initrd<enter><wait>",
-    "boot<enter>"
+boot_command = [
+    "<esc><wait>",
+    "install <wait>",
+    "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+    "debian-installer/locale=en_US.UTF-8 <wait>",
+    "keyboard-configuration/xkb-keymap=us <wait>",
+    "netcfg/get_hostname=${var.target_app} <wait>",
+    "netcfg/get_domain=unassigned-domain <wait>",
+    "fb=false debconf/priority=critical <wait>",
+    "DEBIAN_FRONTEND=noninteractive <wait>", # Forces the installer to never ask questions
+    "auto=true <wait>",
+    "interface=auto <wait>",
+    "<enter>"
   ]
 
   ssh_username = "kevin"
@@ -121,7 +127,6 @@ build {
   provisioner "shell" {
     inline = [
       "sudo cloud-init clean --logs", # Crucial: Tells the OS "You haven't booted yet"
-      "sudo rm -f /etc/cloud/cloud.cfg.d/subiquity-disable-cloudinit-networking.cfg", # Fix for Ubuntu 24.04
       "sudo rm -f /etc/netplan/00-installer-config.yaml", # Remove Packer's network config
       "sudo truncate -s 0 /etc/machine-id",
       "sudo sync",
