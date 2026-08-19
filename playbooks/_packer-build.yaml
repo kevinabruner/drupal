@@ -1,7 +1,7 @@
 - name: Setup templated Drupal install for packer image
   hosts: all
   vars_files:
-    - /home/kevin/db-server/playbook/vault.yaml
+    - /home/kevin/db-server/playbooks/vault.yaml
     - /home/kevin/drupal/group_vars/vault.yaml
     - /home/kevin/drupal/group_vars/all.yaml
   become: true
