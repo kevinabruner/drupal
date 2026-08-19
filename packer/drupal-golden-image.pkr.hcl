@@ -84,19 +84,21 @@ source "proxmox-iso" "drupal-base" {
 
   boot_wait = "10s" 
   
-boot_command = [
+  boot_command = [
     "<esc><wait>",
     "install <wait>",
     "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
+    "partman-auto/method=regular <wait>",
     "debian-installer/locale=en_US.UTF-8 <wait>",
     "keyboard-configuration/xkb-keymap=us <wait>",
-    "netcfg/get_hostname=${var.target_app} <wait>",
+    "netcfg/get_hostname=proxy <wait>",
     "netcfg/get_domain=unassigned-domain <wait>",
     "fb=false debconf/priority=critical <wait>",
     "DEBIAN_FRONTEND=noninteractive <wait>", # Forces the installer to never ask questions
     "auto=true <wait>",
     "interface=auto <wait>",
-    "<enter>"
+    "<enter><wait10>",
+    "<leftAltOn><f4><leftAltOff>"
   ]
 
   ssh_username = "kevin"
@@ -126,6 +128,12 @@ build {
   # Step 2: Final Sanitization 
   provisioner "shell" {
     inline = [
+      "sudo swapoff -a",
+      "sudo sed -i '/swap/d' /etc/fstab",
+      "echo 'y' | sudo parted /dev/sda rm 5 || true",
+      "echo 'y' | sudo parted /dev/sda rm 2 || true",
+      "sudo cloud-init clean --logs",
+      "sudo truncate -s 0 /etc/machine-id",
       "sudo cloud-init clean --logs", # Crucial: Tells the OS "You haven't booted yet"
       "sudo rm -f /etc/netplan/00-installer-config.yaml", # Remove Packer's network config
       "sudo truncate -s 0 /etc/machine-id",
