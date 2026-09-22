@@ -58,9 +58,6 @@ source "proxmox-clone" "drupal-base" {
   # Enable QEMU agent so Packer can query the IP
   qemu_agent = true
 
-  # Instruct Proxmox Cloud-Init to assign DHCP on boot
-  ipconfig0 = "ip=dhcp"
-
   # Target VM settings
   vm_name = "${var.target_app}-dev-golden"
   pool     = "Template"
