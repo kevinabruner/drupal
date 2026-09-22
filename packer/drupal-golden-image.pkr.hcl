@@ -107,6 +107,7 @@ build {
       "sudo sync"
     ]
   }
+  
   post-processor "shell-local" {
     inline = [
       # copy the disk from local-zfs to NAS (nfs)
