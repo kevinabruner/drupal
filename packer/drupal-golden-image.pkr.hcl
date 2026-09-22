@@ -55,6 +55,14 @@ source "proxmox-clone" "drupal-base" {
   clone_vm = var.clone_template_name
   full_clone = true
 
+  # Enable QEMU agent so Packer can query the IP
+  qemu_agent = true
+
+  # Instruct Proxmox Cloud-Init to assign DHCP on boot
+  ip_config {
+    ip = "dhcp"
+  }
+
   # Target VM settings
   vm_name = "${var.target_app}-dev-golden"
   pool     = "Template"
@@ -96,7 +104,7 @@ build {
       "sudo cloud-init clean --logs",
       "sudo truncate -s 0 /etc/machine-id",
       "sudo cloud-init clean --logs", # Crucial: Tells the OS "You haven't booted yet"
-      "sudo rm -f /etc/netplan/00-installer-config.yaml", # Remove Packer's network config
+      "sudo rm -f /etc/netplan/*", # Remove Packer's network config
       "sudo truncate -s 0 /etc/machine-id",
       "sudo sync",
       "sudo rm /etc/environment"
