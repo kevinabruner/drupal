@@ -38,68 +38,29 @@ variable "target_app" {
 
 variable "proxmox_api_url" { type = string }
 
-source "proxmox-iso" "drupal-base" {
+variable "clone_template_vmid" {
+  type    = string
+  default = "8024" 
+}
+
+source "proxmox-clone" "drupal-base" {
   proxmox_url = var.proxmox_api_url
   vm_id       = var.proxmox_vmid
   username    = "terraform@pam!main_terraform"
   token       = var.proxmox_api_token_secret
 
   node    = "pve"
+
+  # Template source settings
+  clone_vm = var.clone_template_vmid
+  full_clone = true
+
+  # Target VM settings
   vm_name = "${var.target_app}-dev-golden"
   pool     = "Template"
 
-
-  # Use the modern boot_iso block
-  boot_iso {
-    type         = "scsi"
-    iso_file     = "truenas-nfs:iso/debian-13.3.0-amd64-netinst.iso"
-    unmount      = true
-  }
-
-  # Simple disk definition - use type 'scsi' and ensure scsi_controller is set
-  scsi_controller = "virtio-scsi-pci"
-  disks {
-    disk_size    = "6G"
-    format       = "raw"
-    storage_pool = "local-zfs"
-    type         = "scsi"
-  }
-
   cores  = 4
   memory = 4096
-
-  network_adapters {
-    model    = "virtio"
-    bridge   = "vmbr0"
-    firewall = false
-  }
-
-  http_bind_address = "192.168.11.17"
-  http_port_min     = 8795
-  http_port_max     = 8795
-
-  http_content = {
-    "/preseed.cfg" = templatefile("preseed.pkrtpl.hcl", { ssh_key = local.my_public_key })
-  }
-
-  boot_wait = "10s" 
-  
-  boot_command = [
-    "<esc><wait>",
-    "install <wait>",
-    "preseed/url=http://{{ .HTTPIP }}:{{ .HTTPPort }}/preseed.cfg <wait>",
-    "partman-auto/method=regular <wait>",
-    "debian-installer/locale=en_US.UTF-8 <wait>",
-    "keyboard-configuration/xkb-keymap=us <wait>",
-    "netcfg/get_hostname=proxy <wait>",
-    "netcfg/get_domain=unassigned-domain <wait>",
-    "fb=false debconf/priority=critical <wait>",
-    "DEBIAN_FRONTEND=noninteractive <wait>", # Forces the installer to never ask questions
-    "auto=true <wait>",
-    "interface=auto <wait>",
-    "<enter><wait10>",
-    "<leftAltOn><f4><leftAltOff>"
-  ]
 
   ssh_username = "kevin"
   ssh_handshake_attempts = 100
