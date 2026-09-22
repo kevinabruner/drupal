@@ -81,7 +81,8 @@ build {
     use_proxy     = false
     ansible_env_vars = [
       "ANSIBLE_ROLES_PATH=./roles",
-      "ANSIBLE_HOST_KEY_CHECKING=False"
+      "ANSIBLE_HOST_KEY_CHECKING=False",
+      "DEBIAN_FRONTEND=noninteractive"
     ]
     # Pass target_app variable
     extra_arguments = [
