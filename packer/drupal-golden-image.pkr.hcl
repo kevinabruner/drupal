@@ -38,7 +38,7 @@ variable "target_app" {
 
 variable "proxmox_api_url" { type = string }
 
-variable "clone_template_vmid" {
+variable "clone_template_name" {
   type    = string
   default = "debian-trixie-golden" 
 }
@@ -52,7 +52,7 @@ source "proxmox-clone" "drupal-base" {
   node    = "pve"
 
   # Template source settings
-  clone_vm = var.clone_template_vmid
+  clone_vm = var.clone_template_name
   full_clone = true
 
   # Target VM settings
