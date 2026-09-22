@@ -69,6 +69,16 @@ source "proxmox-clone" "drupal-base" {
   ssh_handshake_attempts = 100
   ssh_timeout  = "15m"
   ssh_private_key_file = "~/.ssh/id_rsa"
+
+  # Override disk cache on the clone
+  disks {
+    disk_size    = "6G"
+    format       = "raw"
+    storage_pool = "local-zfs"
+    type         = "scsi"
+    cache_mode   = "unsafe"  # Crucial for build speed on ZFS/NFS
+  }
+  
 }
 
 build {
