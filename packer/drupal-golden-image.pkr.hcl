@@ -40,7 +40,7 @@ variable "proxmox_api_url" { type = string }
 
 variable "clone_template_name" {
   type    = string
-  default = "debian-trixie-packer" 
+  default = "debian-trixie-golden" 
 }
 
 source "proxmox-clone" "drupal-base" {
