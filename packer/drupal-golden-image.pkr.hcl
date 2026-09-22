@@ -75,14 +75,14 @@ source "proxmox-clone" "drupal-base" {
 build {
   sources = ["source.proxmox-clone.drupal-base"]
 
-  # Step 0: Move disk to local-zfs from NAS
+  # 0: Move disk to local-zfs from NAS
   provisioner "shell-local" {
     inline = [
       "ssh root@pve 'qm move_disk ${var.proxmox_vmid} scsi0 local-zfs --delete'"
     ]
   }
 
-  # Step 1: Run your existing Ansible roles
+  # 1: Run Ansible playbook
   provisioner "ansible" {
     playbook_file = "./playbooks/_packer-build.yaml"
     user          = "kevin"
@@ -97,7 +97,7 @@ build {
     ]
   }
 
-  # Step 2: Final Sanitization 
+  # 2: Final Sanitization 
   provisioner "shell" {
     inline = [
       "sudo cloud-init clean --logs",
