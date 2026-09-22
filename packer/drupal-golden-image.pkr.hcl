@@ -59,9 +59,7 @@ source "proxmox-clone" "drupal-base" {
   qemu_agent = true
 
   # Instruct Proxmox Cloud-Init to assign DHCP on boot
-  ip_config {
-    ip = "dhcp"
-  }
+  ipconfig0 = "ip=dhcp"
 
   # Target VM settings
   vm_name = "${var.target_app}-dev-golden"
