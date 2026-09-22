@@ -17,6 +17,7 @@
   ansible.builtin.apt:
     name: "{{ php_packages + system_packages }}"
     state: present
+    dpkg_options: 'force-confdef,force-confold,force-unsafe-io'
   become: true
 
 - name: Ensure kevin is in www-data group
