@@ -55,8 +55,13 @@ source "proxmox-clone" "drupal-base" {
   clone_vm = var.clone_template_name
   full_clone = true
 
-  # Clone the primary OS disk onto local-zfs storage for the build
-  storage_pool = "local-zfs"
+  disks {
+    type         = "scsi"
+    storage_pool = "local-zfs"
+    cache_mode   = "unsafe"
+    format       = "raw"
+    disk_size    = "6G"
+  }
 
   # Enable QEMU agent so Packer can query the IP
   qemu_agent = true
