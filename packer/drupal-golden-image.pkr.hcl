@@ -54,14 +54,7 @@ source "proxmox-clone" "drupal-base" {
   # Template source settings
   clone_vm = var.clone_template_name
   full_clone = true
-
-  disks {
-    type         = "scsi"
-    storage_pool = "local-zfs"
-    cache_mode   = "unsafe"
-    format       = "raw"
-    disk_size    = "6G"
-  }
+  target_storage = "local-zfs"
 
   # Enable QEMU agent so Packer can query the IP
   qemu_agent = true
