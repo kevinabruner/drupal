@@ -54,7 +54,6 @@ source "proxmox-clone" "drupal-base" {
   # Template source settings
   clone_vm = var.clone_template_name
   full_clone = true
-  target_storage = "local-zfs"
 
   # Enable QEMU agent so Packer can query the IP
   qemu_agent = true
@@ -75,6 +74,13 @@ source "proxmox-clone" "drupal-base" {
 
 build {
   sources = ["source.proxmox-clone.drupal-base"]
+
+  # Step 0: Move disk to local
+  provisioner "shell-local" {
+    inline = [
+      "ssh root@pve 'qm move_disk ${var.proxmox_vmid} scsi0 local-zfs --delete'"
+    ]
+  }
 
   # Step 1: Run your existing Ansible roles
   provisioner "ansible" {
