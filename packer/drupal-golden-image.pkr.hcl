@@ -106,8 +106,7 @@ build {
       "sudo cloud-init clean --logs", # Crucial: Tells the OS "You haven't booted yet"
       "sudo rm -f /etc/netplan/*", # Remove Packer's network config
       "sudo truncate -s 0 /etc/machine-id",
-      "sudo sync",
-      "sudo rm /etc/environment"
+      "sudo sync"
     ]
   }
   post-processor "shell-local" {
