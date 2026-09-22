@@ -68,7 +68,6 @@ source "proxmox-clone" "drupal-base" {
   ssh_handshake_attempts = 100
   ssh_timeout  = "15m"
   ssh_private_key_file = "~/.ssh/id_rsa"
-
 }
 
 build {
@@ -107,7 +106,7 @@ build {
       "sudo sync"
     ]
   }
-  
+
   post-processor "shell-local" {
     inline = [
       # copy the disk from local-zfs to NAS (nfs)
