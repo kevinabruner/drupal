@@ -69,7 +69,7 @@ source "proxmox-clone" "drupal-base" {
 }
 
 build {
-  sources = ["source.proxmox-iso.drupal-base"]
+  sources = ["source.proxmox-clone.drupal-base"]
 
   # Step 1: Run your existing Ansible roles
   provisioner "ansible" {
