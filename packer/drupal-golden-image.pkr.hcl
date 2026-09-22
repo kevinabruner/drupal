@@ -75,7 +75,7 @@ source "proxmox-clone" "drupal-base" {
 build {
   sources = ["source.proxmox-clone.drupal-base"]
 
-  # Step 0: Move disk to local
+  # Step 0: Move disk to local-zfs from NAS
   provisioner "shell-local" {
     inline = [
       "ssh root@pve 'qm move_disk ${var.proxmox_vmid} scsi0 local-zfs --delete'"
@@ -102,8 +102,8 @@ build {
     inline = [
       "sudo cloud-init clean --logs",
       "sudo truncate -s 0 /etc/machine-id",
-      "sudo cloud-init clean --logs", # Crucial: Tells the OS "You haven't booted yet"
-      "sudo rm -f /etc/netplan/*", # Remove Packer's network config
+      "sudo cloud-init clean --logs", 
+      "sudo rm -f /etc/netplan/*", 
       "sudo truncate -s 0 /etc/machine-id",
       "sudo sync"
     ]
