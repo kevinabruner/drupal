@@ -28,9 +28,10 @@ These roles and playbooks are designed to manage a number of websites, but are n
     - There's a [basic script](./bake.sh) in the root of this repo which invokes packer and the `_packer-preflight.yaml` playbook to ensure the previous golden image is destroyed and the previous step of building composer has been run. 
     - You must provide the drupal application as an argument
       - `./bake.sh [APP_NAME]`
-3. You can then deploy to dev using a playbook if your image built correctly.
-    - `ansible-playbook playbooks/deploy-dev.yaml -e target_app=[APP_NAME]`
+3. Optionally log in to the ansible controller and replace your dev server.
+    - `tf-replace [DEV_SERVER_NAME]`
+4. You can then promote the dev image using a playbook if your image built correctly.
+    - `ansible-playbook playbooks/promote-image.yaml -e target_app=[APP_NAME]`
     - Alternatively, you can simply re-deploy using terraform which will use the new image. 
-4. If your dev servers look good, go ahead and do the same for prod
-    - `ansible-playbook playbooks/deploy-prod.yaml -e target_app=[APP_NAME]`
-    - Same as the dev servers, terraform will automatically deploy from the latest golden image.
+5. Terraform will then use your new image automatically for new prod deployments. You can redeploy your prod servers one-at-a-time:
+    - `tf-replace [PROD_SERVER_NAME]`
