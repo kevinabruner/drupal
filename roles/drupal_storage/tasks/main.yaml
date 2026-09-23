@@ -17,7 +17,7 @@
     - "{{ ceph_target_dir }}"
   become: true
 
-- name: Configure NFS in fstab
+- name: Configure NFS in fstab 
   ansible.posix.mount:
     path: "{{ nfs_target_dir }}"
     src: "{{ nfs_server }}:{{ nfs_share }}"
@@ -31,6 +31,6 @@
     path: "{{ ceph_target_dir }}"
     src: "{{ ceph_monitors }}:/{{ target_app }}"
     fstype: ceph
-    opts: "{{ nfs_options | join(',') }}"
+    opts: "name={{ ceph_user }},secretfile=/etc/ceph/{{ ceph_user }}.secret,_netdev,noauto"
     state: present
   become: true
