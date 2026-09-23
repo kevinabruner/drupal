@@ -108,6 +108,7 @@ build {
   # 3: Copy the disk back from local-zfs to NAS (nfs)
   post-processor "shell-local" {
     inline = [
-    "ssh root@pve 'qm move_disk ${var.proxmox_vmid} scsi0 truenas-nfs --delete'"    ]
+      "ssh root@pve 'qm move_disk ${var.proxmox_vmid} scsi0 truenas-nfs --delete'"    
+    ]
   }
 }
