@@ -18,7 +18,5 @@ systemctl restart apache2
 
 # If the hostname ends in 1 and we're in prod, then create a cron job to backup nfs
 if [[ "$(hostname)" == *1 && "$environment" == "prod" ]]; then
-    cat <<EOF > /etc/cron.d/ceph-nfs-backup
-    0 3 * * * root rsync -az --delete /var/www/html/sites/default/files/ /home/kevin/nfs-files
-    EOF
+    cat "0 3 * * * root rsync -az --delete /var/www/html/sites/default/files/ /home/kevin/nfs-files" > /etc/cron.d/ceph-nfs-backup
 fi
