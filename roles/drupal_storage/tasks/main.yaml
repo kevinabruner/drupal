@@ -31,6 +31,6 @@
     path: "{{ ceph_target_dir }}"
     src: "{{ ceph_monitors }}:/{{ target_app }}"
     fstype: ceph
-    opts: "name={{ ceph_user }},secretfile=/etc/ceph/{{ ceph_user }}.secret,_netdev,noauto"
+    opts: "name={{ ceph_user }},secretfile=/etc/ceph/{{ ceph_user }}.secret,_netdev"
     state: present
   become: true
