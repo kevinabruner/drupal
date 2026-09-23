@@ -1,1 +1,2 @@
 alias bootstrap-log="tail -f -n +1 /var/log/kevin-bootstrap.log"
+alias drush="/var/www/vendor/drush/drush/drush"
