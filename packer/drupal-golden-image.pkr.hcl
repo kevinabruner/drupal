@@ -98,8 +98,6 @@ build {
   # 2: Final Sanitization 
   provisioner "shell" {
     inline = [
-      "sudo cloud-init clean --logs",
-      "sudo truncate -s 0 /etc/machine-id",
       "sudo cloud-init clean --logs", 
       "sudo rm -f /etc/netplan/*", 
       "sudo truncate -s 0 /etc/machine-id",
