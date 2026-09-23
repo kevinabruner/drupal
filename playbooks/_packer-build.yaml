@@ -9,3 +9,4 @@
     - drupal_dependencies
     - drupal_deploy
     - drupal_storage
+    - first_boot

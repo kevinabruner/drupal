@@ -1,0 +1,19 @@
+[Unit]
+Description=Runs first boot scripts after cloud-init completes
+DefaultDependencies=no
+Requires=sysinit.target
+After=sysinit.target cloud-final.service
+ConditionPathExists=!/var/lib/kevin-boot-done
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/bin/kevin-bootstrap.sh
+ExecStartPost=/usr/bin/touch /var/lib/kevin-boot-done
+
+# Logging Configuration
+StandardOutput=file:/var/log/kevin-bootstrap.log
+StandardError=file:/var/log/kevin-bootstrap.log
+
+[Install]
+WantedBy=multi-user.target
