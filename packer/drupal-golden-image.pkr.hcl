@@ -48,7 +48,7 @@ source "proxmox-clone" "drupal-base" {
   vm_id       = var.proxmox_vmid
   username    = "terraform@pam!main_terraform"
   token       = var.proxmox_api_token_secret
-  node    = "pve"
+  node        = "pve"
 
   # Template source settings
   clone_vm = var.clone_template_name
