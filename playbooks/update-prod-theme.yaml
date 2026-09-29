@@ -1,0 +1,10 @@
+- name: Update the theme
+  hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_prod:&role_drupal"
+  roles:
+    - drupal_theme
+
+- name: Database operations for prod
+  serial: 1
+  hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_prod:&role_drupal"
+  roles:
+    - drupal_db_ops
