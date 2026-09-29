@@ -4,7 +4,7 @@
     - drupal_theme
 
 - name: Database operations for prod
-  serial: 1
+  run_once: true
   hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_prod:&role_drupal"
   roles:
     - drupal_db_ops
