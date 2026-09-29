@@ -7,5 +7,4 @@
   serial: 1
   hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev:&role_drupal"
   roles:
-    - drupal_theme
     - drupal_db_ops
