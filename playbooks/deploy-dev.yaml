@@ -2,4 +2,5 @@
   hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev:&role_drupal"
   roles:
     - drupal_deploy
+    - drupal_theme
     - drupal_db_ops

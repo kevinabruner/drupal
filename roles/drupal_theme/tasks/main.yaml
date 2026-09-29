@@ -1,0 +1,4 @@
+- name: Copy theme(s)
+  ansible.builtin.copy:
+    src: "{{ build_base_path }}/{{ target_app }}/drupal/themes/"
+    dest: "/var/www/html/themes/contrib/"
