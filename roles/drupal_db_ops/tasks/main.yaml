@@ -2,7 +2,7 @@
   become: true
   become_user: www-data
   ansible.builtin.shell:
-    cmd: "export env='{{ env }}'; /var/www/vendor/drush/drush/drush {{ item }}"
+    cmd: "export environment='{{ env }}'; /var/www/vendor/drush/drush/drush {{ item }}"
     chdir: "/var/www/html/sites/default"
   run_once: true
   loop:
