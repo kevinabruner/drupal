@@ -2,7 +2,7 @@
   hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_prod:&role_drupal"
   roles:
     - drupal_theme
-    - drupal_settings
+    - drupal_configure
 
 - name: Database operations for prod
   run_once: true

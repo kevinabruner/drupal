@@ -3,5 +3,5 @@
   roles:
     - drupal_deploy_composer
     - drupal_theme
-    - drupal_settings
+    - drupal_configure
     - drupal_db_ops
