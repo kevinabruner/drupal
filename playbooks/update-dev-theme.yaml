@@ -6,5 +6,7 @@
 - name: Database operations for dev
   run_once: true
   hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev:&role_drupal"
+  vars: 
+    - env: "dev"
   roles:
     - drupal_db_ops
