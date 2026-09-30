@@ -7,7 +7,8 @@
   become: true
   roles:
     - drupal_dependencies
-    - drupal_deploy
+    - drupal_deploy_composer
+    - drupal_configure
     - drupal_theme
     - drupal_storage
     - first_boot

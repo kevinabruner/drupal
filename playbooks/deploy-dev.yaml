@@ -1,6 +1,7 @@
 - name: Deploy code directly to dev servers
   hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev:&role_drupal"
   roles:
-    - drupal_deploy
+    - drupal_deploy_composer
     - drupal_theme
+    - drupal_settings
     - drupal_db_ops

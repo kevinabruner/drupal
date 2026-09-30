@@ -1,18 +1,3 @@
-- name: Sync Drupal Core and Vendor
-  ansible.posix.synchronize:
-    src: "{{ build_base_path }}/{{ target_app }}/.build/{{ item.src }}/"
-    dest: "/var/www/{{ item.dest }}/"
-    delete: yes
-  loop:
-    - { src: "html", dest: "html", opts: ["--exclude=sites/default/files", "--exclude=sites/default/settings.php"] }
-    - { src: "vendor", dest: "vendor" }
-  become: true
-
-- name: Copy theme(s)
-  ansible.builtin.copy:
-    src: "{{ build_base_path }}/{{ target_app }}/drupal/themes/"
-    dest: "/var/www/html/themes/contrib/"
-
 - name: Deploy settings.php and Apache Vhost
   ansible.builtin.template:
     src: "{{ item.src }}"

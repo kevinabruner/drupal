@@ -1,0 +1,10 @@
+- name: Sync Drupal Core and Vendor
+  ansible.posix.synchronize:
+    src: "{{ build_base_path }}/{{ target_app }}/.build/{{ item.src }}/"
+    dest: "/var/www/{{ item.dest }}/"
+    delete: yes
+  loop:
+    - { src: "html", dest: "html", opts: ["--exclude=sites/default/files", "--exclude=sites/default/settings.php"] }
+    - { src: "vendor", dest: "vendor" }
+  become: true
+
