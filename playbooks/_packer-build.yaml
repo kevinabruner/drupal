@@ -2,7 +2,7 @@
   hosts: all
   vars_files:
     - /home/kevin/db-server/playbooks/vault.yaml
-    - /home/kevin/drupal/playbooks/vault.yaml
+    - /home/kevin/drupal/playbooks/group_vars/vault.yaml
   become: true
   roles:
     - drupal_dependencies
