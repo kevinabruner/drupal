@@ -1,5 +1,7 @@
 - name: Update the theme
   hosts: "repo_{{ target_app | default('UNDEFINED') }}:&env_dev:&role_drupal"
+  vars_files:
+    - /home/kevin/db-server/playbooks/vault.yaml
   roles:
     - drupal_theme
     - drupal_configure
