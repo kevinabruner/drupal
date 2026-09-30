@@ -31,7 +31,6 @@
     name: "{{ item }}"
     state: present
   loop: [rewrite, status]
-  notify: Restart Apache
   become: true
 
 - name: Configure Apache global options
@@ -39,5 +38,10 @@
     path: /etc/apache2/apache2.conf
     regexp: "(<Directory /var/www/>)\\n(\\s+Options Indexes FollowSymLinks\\n\\s+AllowOverride) None"
     replace: "\\1\\n\\2 All"
-  notify: Restart Apache
+  become: true
+
+- name: Restart Apache
+  ansible.builtin.service:
+    name: apache2
+    state: restarted
   become: true
