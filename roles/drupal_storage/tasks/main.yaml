@@ -19,7 +19,7 @@
 - name: Configure CephFS in fstab 
   ansible.posix.mount:
     path: "{{ ceph_target_dir }}"
-    src: "{{ ceph_monitors }}:/{{ target_app }}"
+    src: "{{ ceph_monitors }}:/{{ target_app }}/files"
     fstype: ceph
     opts: "name={{ ceph_user }},secretfile=/etc/ceph/{{ ceph_user }}.secret,_netdev"
     state: present
