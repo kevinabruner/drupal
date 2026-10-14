@@ -1,5 +1,0 @@
-- name: "Promote {{ target_app }} from Dev to Prod"
-  hosts: localhost
-  gather_facts: false
-  roles:
-    - proxmox_promote

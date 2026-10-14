@@ -1,0 +1,12 @@
+- name: Setup templated Drupal install for packer image
+  hosts: all
+  vars_files:
+    - /home/kevin/db-server/playbooks/vault.yaml
+    - /home/kevin/drupal/playbooks/group_vars/vault.yaml
+  become: true
+  roles:
+    - drupal_dependencies
+    - drupal_deploy_composer
+    - drupal_configure
+    - drupal_theme
+    - first_boot

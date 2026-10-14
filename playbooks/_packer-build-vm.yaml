@@ -8,6 +8,6 @@
     - drupal_dependencies
     - drupal_deploy_composer
     - drupal_configure
-    - drupal_theme
     - drupal_storage
+    - drupal_theme
     - first_boot
