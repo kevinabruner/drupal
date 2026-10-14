@@ -87,7 +87,7 @@ build {
 
   # 1: Run Ansible playbook
   provisioner "ansible" {
-    playbook_file = "./playbooks/_packer-build.yaml"
+    playbook_file = "./playbooks/_packer-build-vm.yaml"
     user          = "kevin"
     use_proxy     = false
     ansible_env_vars = [
