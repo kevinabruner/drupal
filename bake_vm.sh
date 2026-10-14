@@ -38,4 +38,4 @@ time packer build \
     -var "env=${env}" \
     -var-file="packer/variables.pkrvars.hcl" \
     -var-file="packer/secret.pkrvars.hcl" \
-    packer/drupal-golden-image.pkr.hcl
+    packer/golden-image.pkr.hcl
