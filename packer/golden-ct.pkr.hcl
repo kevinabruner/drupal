@@ -52,7 +52,6 @@ variable "pve_template_dir" {
 
 variable "playbook_file" {
   type        = string
-  default     = "_packer-build.yaml"
   description = "Path to the Ansible playbook relative to execution root."
 }
 

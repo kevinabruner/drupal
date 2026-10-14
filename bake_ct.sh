@@ -4,7 +4,7 @@ OS_TEMPLATE="truenas-nfs:vztmpl/debian-13-golden.tar.zst"
 VMID="9000"
 env="$2"        # 'dev' or 'prod'
 OUTPUT="${app_name}-${env}-golden"
-PLAYBOOK="_packer-build.yaml"
+PLAYBOOK="playbooks/_packer-build.yaml"
 
 set -euo pipefail
 
