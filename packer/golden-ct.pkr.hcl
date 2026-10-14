@@ -89,7 +89,7 @@ build {
       "echo 'Waiting for container SSH daemon...'",
       "until ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_rsa root@$CT_IP 'echo ssh-ready'; do sleep 2; done",
 
-      "ANSIBLE_FORCE_COLOR=1 DEBIAN_FRONTEND=noninteractive ansible-playbook -i \"$CT_IP,\" -u root --private-key=~/.ssh/id_rsa --extra-vars \"metadata_path=${var.metadata_source_path} env=${var.env} \" ${var.playbook_file}"  
+      "ANSIBLE_FORCE_COLOR=1 DEBIAN_FRONTEND=noninteractive ansible-playbook -i \"$CT_IP,\" -u root --private-key=~/.ssh/id_rsa --extra-vars \"env=${var.env} \" ${var.playbook_file}"  
     ]
   }
 
