@@ -55,6 +55,11 @@ variable "playbook_file" {
   description = "Path to the Ansible playbook relative to execution root."
 }
 
+variable "target_app" {
+  type    = string
+  # No default, must be an argument
+}
+
 source "null" "lxc-base" {
   communicator = "none"
 }
@@ -88,7 +93,7 @@ build {
       "echo 'Waiting for container SSH daemon...'",
       "until ssh -o StrictHostKeyChecking=no -o UserKnownHostsFile=/dev/null -i ~/.ssh/id_rsa root@$CT_IP 'echo ssh-ready'; do sleep 2; done",
 
-      "ANSIBLE_FORCE_COLOR=1 DEBIAN_FRONTEND=noninteractive ansible-playbook -i \"$CT_IP,\" -u root --private-key=~/.ssh/id_rsa --extra-vars \"env=${var.env} \" ${var.playbook_file}"  
+      "ANSIBLE_FORCE_COLOR=1 DEBIAN_FRONTEND=noninteractive ansible-playbook -i \"$CT_IP,\" -u root --private-key=~/.ssh/id_rsa --extra-vars \"target_app=${var.target_app} env=${var.env} \" ${var.playbook_file}"  
     ]
   }
 

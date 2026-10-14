@@ -24,6 +24,7 @@ git pull || { echo "Git pull failed"; exit 1; }
 echo "--- Baking golden container template for: $app_name ---"
 time packer build \
     -var "proxmox_vmid=$VMID" \
+    -var "target_app=$app_name" \
     -var "playbook_file"=$PLAYBOOK \
     -var "os_template=$OS_TEMPLATE" \
     -var "env=${env}" \
