@@ -8,6 +8,10 @@ PLAYBOOK="playbooks/_packer-build.yaml"
 
 set -euo pipefail
 
+if [ -z "$app_name" ]; then
+    echo "Error: You must provide a target_app name (e.g., bake.sh nerdperk)"
+    return 1
+fi
 if [[ -z "$env" ]]; then
     echo "Must provide \"dev\" or \"prod\" as arg"
 fi
