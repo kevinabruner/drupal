@@ -13,7 +13,7 @@ echo "--- Fetching VMID from Inventory ---"
 VMID=$(ansible-inventory --list | jq -r '
   ._meta.hostvars as $hv |
   .role_vm_template.hosts[]? | 
-  select($hv[.].custom_fields.repos == "'"$app_name"'" and $hv[.].custom_fields.environment == "dev") | 
+  select($hv[.].custom_fields.repos.value == "'"$app_name"'" and $hv[.].custom_fields.environment.value == "dev") | 
   $hv[.].custom_fields.vmid
 ')
 
