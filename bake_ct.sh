@@ -1,6 +1,6 @@
 #!/bin/bash
 app_name="$1"
-OS_TEMPLATE="truenas-nfs:vztmpl/debian-13-golden.tar.zst"
+OS_TEMPLATE="truenas-nfs:vztmpl/debian-trixie-golden.tar.zst"
 VMID="9000"
 env="$2"        # 'dev' or 'prod'
 OUTPUT="${app_name}-${env}-golden"
