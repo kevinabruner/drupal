@@ -27,7 +27,7 @@
 - name: Ensure PHP 8.4 FPM service is enabled
   service:
     name: php8.4-fpm
-    state: enabled
+    state: stopped
     enabled: yes
 
 - name: Enable Site in Apache
