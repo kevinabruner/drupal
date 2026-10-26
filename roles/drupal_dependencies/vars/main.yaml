@@ -5,6 +5,7 @@ php_packages:
   - php-xml
   - php-mbstring
   - php-curl
+  - php-fpm
 
 system_packages:
   - apache2

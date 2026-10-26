@@ -8,6 +8,27 @@
     - { src: "{{ drupal_template_dir }}/settings.php.j2", dest: "/var/www/html/sites/default/settings.php" }
     - { src: "{{ drupal_template_dir }}/haproxy-target.conf.j2", dest: "/etc/apache2/sites-available/haproxy-target.conf" }
   become: true
+  
+- name: Enable required Apache proxy modules for PHP-FPM
+  command: a2enmod proxy_fcgi setenvif
+  args:
+    creates: /etc/apache2/mods-enabled/proxy_fcgi.load
+
+- name: Enable PHP 8.4 FPM configuration in Apache
+  command: a2enconf php8.4-fpm
+  args:
+    creates: /etc/apache2/conf-enabled/php8.4-fpm.conf
+
+- name: Disable old embedded mod_php module
+  command: a2dismod php8.4
+  args:
+    removes: /etc/apache2/mods-enabled/php8.4.load
+
+- name: Ensure PHP 8.4 FPM service is enabled
+  service:
+    name: php8.4-fpm
+    state: enabled
+    enabled: yes
 
 - name: Enable Site in Apache
   ansible.builtin.command: a2ensite haproxy-target
@@ -17,10 +38,4 @@
 
 - name: Ensure default Apache site is disabled
   ansible.builtin.command: a2dissite 000-default.conf
-  become: true
-
-- name: Restart Apache
-  ansible.builtin.service:
-    name: apache2
-    state: restarted
   become: true
